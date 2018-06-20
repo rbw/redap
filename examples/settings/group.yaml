@@ -1,6 +1,10 @@
 # LDAP Object Classes
 classes:
+  - top
   - group
+
+# Optional relative DN
+# relative_dn: ou=groups
 
 # Required fields on create/update
 required_fields:

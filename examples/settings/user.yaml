@@ -1,9 +1,10 @@
 # LDAP Object Classes
 classes:
+  - top
   - user
 
-# Relative to ldap.base_dn
-relative_dn: ou=users
+# Optional relative DN
+# relative_dn: ou=users
 
 # Required fields on create/update
 required_fields:
