@@ -38,7 +38,7 @@ The long-term goal is to provide helpers for common operations in other, also po
 
 Documentation
 -------------
-Check out `the wiki <https://github.com/rbw0/restory-devel/wiki>`_ for guides and other info.
+Check out `the wiki <https://github.com/rbw0/lapdance/wiki>`_ for guides and other info.
 
 
 Author
