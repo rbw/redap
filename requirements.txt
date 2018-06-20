@@ -1,0 +1,9 @@
+furl>=1.1
+cerberus>=1.2
+python-dotenv>=0.8.2
+flask>=1.0.2
+flask-sqlalchemy>=2.3.2
+flask-cors>=3.0.6
+flask-ldapconn>=0.7.2
+flask-migrate>=2.2.0
+flasgger>=0.9.0
