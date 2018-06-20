@@ -1,0 +1,41 @@
+# LDAP Object Classes
+classes:
+  - user
+
+# Relative to ldap.base_dn
+relative_dn: ou=users
+
+# Required fields on create/update
+required_fields:
+  - id
+  - name
+  - email
+  - first_name
+  - last_name
+
+# Lapdance-LDAP field mappings
+fields:
+  id:
+    type: string
+    ldap_name: sAMAccountName
+  name:
+    type: string
+    ldap_name: cn
+  distinguished_name:
+    type: string
+    ldap_name: distinguishedName
+  email:
+    type: string
+    ldap_name: mail
+  last_name:
+    type: string
+    ldap_name: sn
+  first_name:
+    type: string
+    ldap_name: givenName
+  last_logon:
+    type: string
+    ldap_name: lastLogon
+  logon_count:
+    type: string
+    ldap_name: logonCount
