@@ -20,7 +20,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 SWAGGER = {
     'title': 'Lapdance',
-    'description': 'Unleash your LDAP directory',
+    'description': 'HTTP/LDAP Gateway',
     'contact': {
         'responsibleDeveloper': 'Robert Wikman',
         'email': 'rbw@vault13.org',
@@ -29,7 +29,6 @@ SWAGGER = {
     'specs_route': '/api-docs',
     'basePath': '/',
     'version': '0.0.2',
-    # 'host': SERVER_NAME,
     'swagger_ui': True,
     'uiversion': 2,
     'securityDefinitions': {
