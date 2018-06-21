@@ -16,7 +16,7 @@ Adding LDAP support to an application can be a time-consuming and complex task; 
 
 Description
 ------
-Lapdance is robust and customizable enough for production use, yet simple enough for grandma to operate.
+Powered by Flask—robust and customizable enough for production use—simple enough for grandma to operate.
 
 It was partly inspired by, and is conceptually similar to Addict—but offers more sugar:
 
