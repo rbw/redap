@@ -6,11 +6,6 @@ schema = {
         'type': 'list',
         'default': []
     },
-    'default_filter': {
-        'required': False,
-        'default': '(cn=*)',
-        'type': 'string'
-    },
     'relative_dn': {
         'required': False,
         'type': 'string'
