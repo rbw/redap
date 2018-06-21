@@ -9,16 +9,11 @@
 
 
 
-Motivation
-------
-Adding LDAP support to an application can be a time-consuming and complex task; Lapdance remedies this by creating a layer of abstraction on top of the LDAP protocol. Also, as Lapdance runs in its own self-contained environment—it provides not only flexibility, but also customizability—leaving you in control!
-
-
 Description
 ------
-Lapdance is robust and customizable enough for production use, yet simple enough for grandma to operate.
+Powered by Flask—robust and customizable enough for production use—simple enough for grandma to operate.
 
-It was partly inspired by, and is conceptually similar to Addict—but offers more sugar:
+It's partly inspired by, and is conceptually similar to Addict—but offers more sugar:
 
 - API key authorization
 - LDAP3 Simplified Query Language
@@ -34,6 +29,11 @@ At a higher level, it currently provides:
 - Support for extended operations in Active Directory 
 
 The long-term goal is to provide helpers for common operations in other, also popular LDAP directory servers.
+
+
+Motivation
+------
+Adding LDAP support to an application can be a time-consuming and complex task; Lapdance remedies this by creating a layer of abstraction on top of the LDAP protocol. Also, as Lapdance runs in its own self-contained environment—it provides not only flexibility, but also customizability—leaving you in control!
 
 
 Documentation
