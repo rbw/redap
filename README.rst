@@ -13,7 +13,7 @@ Description
 ------
 Powered by Flask—robust and customizable enough for production use—simple enough for grandma to operate.
 
-It was partly inspired by, and is conceptually similar to Addict—but offers more sugar:
+It's partly inspired by, and is conceptually similar to Addict—but offers more sugar:
 
 - API key authorization
 - LDAP3 Simplified Query Language
