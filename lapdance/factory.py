@@ -27,18 +27,23 @@ def create_app(package_name, *args, **kwargs):
     user_config = app.config['LAPDANCE_LDAP_USER']
     group_config = app.config['LAPDANCE_LDAP_GROUP']
 
+    user_fields = user_config['fields']
+    group_fields = group_config['fields']
+
     # Init LDAP user model
     LDAPUser.init_model(
         object_classes=user_config['classes'],
-        base_dn=build_dn(user_config.get('relative_dn'), base_dn),
-        fields=user_config['fields']
+        base_dn=base_dn,
+        entry_rdn=[user_fields['id']['ldap_name']],
+        fields=user_fields
     )
 
     # Init LDAP group model
     LDAPGroup.init_model(
         object_classes=group_config['classes'],
-        base_dn=build_dn(group_config.get('relative_dn'), base_dn),
-        fields=group_config['fields'],
+        base_dn=base_dn,
+        entry_rdn=group_fields['id']['ldap_name'],
+        fields=group_fields,
     )
 
     if app.config['ENV'] != 'devel':
