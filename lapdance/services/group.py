@@ -19,14 +19,13 @@ class GroupService(Service):
     def get_members(self, group_id, include_nested=False, **kwargs):
         group_dn = self.get_one(group_id).dn
 
-        if include_nested in [str(1), 'true']:
+        if str(include_nested).lower() in [str(1), 'true']:
             self._raise_if_incompatible_with(VENDOR_MICROSOFT)
-            # @TODO - create something similar for non-AD
-            nested_filter = '(memberOf:1.2.840.113556.1.4.1941:={0})'.format(group_dn)
+            kwargs['filter'] = '(memberOf:1.2.840.113556.1.4.1941:={0})'.format(group_dn)
         else:
-            nested_filter = '(memberOf={0})'.format(group_dn)
+            kwargs['filter'] = '(memberOf={0})'.format(group_dn)
 
-        return self._users.get_many(nested_filter, **kwargs)
+        return self._users.get_many(**kwargs)
 
     def add_member(self, group_id, payload):
         user = self._users.get_one(payload['id'])
@@ -35,7 +34,6 @@ class GroupService(Service):
             msg = "User {0} is already member of {1}".format(user.id, group_id)
             raise LapdanceError(msg, status_code=400)
 
-        # @TODO - create something similar for non-AD
         self._microsoft_ext.add_members_to_groups([user.dn], [group.dn], payload.pop('fix', False))
 
     def remove_member(self, group_id, user_id):
@@ -45,5 +43,4 @@ class GroupService(Service):
             msg = "User {0} is not a member of {1}".format(user_id, group_id)
             raise LapdanceError(msg, status_code=400)
 
-        # @TODO - create something similar for non-AD
         self._microsoft_ext.remove_members_from_groups([user.dn], [group.dn], fix=False)
