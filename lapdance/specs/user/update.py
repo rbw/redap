@@ -16,7 +16,7 @@ user_update = {
         user_body,
     ],
     'definitions': {
-        **get_user_def(required_fields=[]),
+        **get_user_def(),
         **op_success_def,
         **op_error_def,
     },
