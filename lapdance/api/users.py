@@ -16,7 +16,7 @@ bp = Blueprint('users', __name__, url_prefix='/users')
 
 @route(bp, '/', spec=user_many)
 def get_many(_params):
-    return users.get_many(_params)
+    return users.get_many(**_params)
 
 
 @route(bp, '/', method='POST', spec=user_create)

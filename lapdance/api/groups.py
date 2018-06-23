@@ -14,7 +14,7 @@ bp = Blueprint('groups', __name__, url_prefix='/groups')
 
 @route(bp, '/', spec=group_many)
 def get_many(_params):
-    return groups.get_many(_params)
+    return groups.get_many(**_params)
 
 
 @route(bp, '/', method='POST', spec=group_create)
