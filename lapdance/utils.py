@@ -2,11 +2,10 @@
 
 from functools import wraps
 from furl import furl
-from flasgger import swag_from
+from flasgger import swag_from, validate
 from flask import request, jsonify, current_app as app
 from lapdance.models.apikey import APIKey
 from lapdance.exceptions import LapdanceError
-from sqlalchemy.orm.exc import NoResultFound
 
 
 def generate_apikey_table(api_keys):
@@ -34,6 +33,10 @@ def build_dn(rdn, base_dn):
     return rdn and "{0},{1}".format(rdn, base_dn) or base_dn
 
 
+def validation_error(*args):
+    raise LapdanceError(message=args[0].message, status_code=422)
+
+
 def route(bp, *args, **kwargs):
     method = kwargs.pop('method', 'GET').upper()
     status = 201 if method == 'POST' else 200
@@ -58,9 +61,10 @@ def route(bp, *args, **kwargs):
                     raise LapdanceError(message='Unauthorized', status_code=401)
 
             if method == 'GET':  # Inject _params
-                params = furl(request.url).args
-                inner_kwargs['_params'] = dict(params)
-            elif method in ['POST', 'PUT']:  # Inject payload on insert / update operations
+                url = furl(request.url)
+                inner_kwargs['_params'] = dict(url.query.params)
+            elif method in ['POST', 'PUT']:  # Validate and inject payload on insert / update operations
+                validate(request.get_json(), specs=spec, validation_error_handler=validation_error)
                 inner_kwargs['_payload'] = request.get_json()
 
             response = f(*inner_args, **inner_kwargs)
