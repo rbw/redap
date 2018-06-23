@@ -5,7 +5,6 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask
 from flask.logging import default_handler
 from lapdance.core import ldap, db, migrate
-from lapdance.utils import build_dn
 from lapdance.models import LDAPUser, LDAPGroup
 
 
