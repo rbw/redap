@@ -34,6 +34,14 @@ schema = {
                     'type': 'string',
                     'required': True
                 },
+                'required': {
+                    'type': 'boolean',
+                    'required': False,
+                    'default': True
+                },
+                'default': {
+                    'required': False
+                }
             }
         },
         'schema': {
