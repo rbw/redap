@@ -29,6 +29,26 @@ def generate_spec_def(name, config, required_fields=False):
     }
 
 
+def props_to_str(entry, **kwargs):
+    """Converts value array to string if count <= 1, skips hidden fields"""
+
+    formatted = {}
+    skip_fields = kwargs.pop('skip_fields', [])
+
+    for field_name, value in entry.get_attributes_dict().items():
+        if field_name in skip_fields:
+            continue
+
+        if len(value) == 1:
+            formatted[field_name] = value[0]
+        elif len(value) < 1:
+            formatted[field_name] = None
+        else:
+            formatted[field_name] = value
+
+    return formatted
+
+
 def build_dn(rdn, base_dn):
     return rdn and "{0},{1}".format(rdn, base_dn) or base_dn
 
