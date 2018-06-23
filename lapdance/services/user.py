@@ -20,22 +20,27 @@ class UserService(Service):
 
     def is_member_of(self, user_dn, group_dn):
         id_attr = self.config['fields']['id']['ldap_name']
-        return len(self.get_many('({0}={1})(memberOf={2})'.format(id_attr, user_dn, group_dn))) > 0
+        return len(self.get_many(filter='({0}={1})(memberOf={2})'.format(id_attr, user_dn, group_dn))) > 0
+
+    @property
+    def _groups(self):
+        """Imports and returns groups service"""
+
+        from lapdance.services import groups
+        return groups
 
     def get_groups(self, user_id, include_nested=False, **kwargs):
         """Imports groups service and obtains a list of groups for the user"""
 
-        from lapdance.services import groups
-
         user_dn = self.get_one(user_id).dn
 
-        if include_nested in [str(1), 'true']:
+        if str(include_nested).lower() in [str(1), 'true']:
             self._raise_if_incompatible_with(VENDOR_MICROSOFT)
-            nested_filter = '(member:1.2.840.113556.1.4.1941:={0})'.format(user_dn)
+            kwargs['filter'] = '(member:1.2.840.113556.1.4.1941:={0})'.format(user_dn)
         else:
-            nested_filter = '(member={0})'.format(user_dn)
+            kwargs['filter'] = '(member={0})'.format(user_dn)
 
-        return groups.get_many(nested_filter, **kwargs)
+        return self._groups.get_many(**kwargs)
 
     def set_password(self, user_id, **kwargs):
         user = self.get_one(user_id)
