@@ -1,25 +1,4 @@
-# LDAP Object Classes
-classes:
-  - top
-  - group
-
-# Optional relative DN
-# relative_dn: ou=groups
-
-# Required fields on create/update
-required_fields:
-  - id
-  - name
-
-# Lapdance-LDAP field mappings
-fields:
-  id:
-    type: string
-    ldap_name: sAMAccountName
-  name:
-    type: string
-    ldap_name: cn
-  distinguished_name:
-    type: string
-    ldap_name: distinguishedName
-
+# This container configuration is populated based on `directory_type` in ldap.yaml, but can be overridden if you want.
+# Not specifying a `directory_type` requires you to populate this configuration manually.
+#
+# Please see https://github.com/rbw0/lapdance/wiki/User-and-Group-containers for more info
