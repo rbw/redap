@@ -3,6 +3,7 @@
 from flask import current_app as app
 from lapdance.core import ldap
 from lapdance.exceptions import LapdanceError
+from lapdance.utils import props_to_str
 
 VENDOR_MICROSOFT = 'MICRO$OFT'
 VENDOR_UNKNOWN = 'UNKNOWN'
@@ -17,30 +18,9 @@ class ResponseHandler(object):
         if self.count == 0 and raise_on_empty:
             raise LapdanceError(message='No such object', status_code=404)
 
-    def props_to_str(self, entry):
-        """Converts value array to string if count <= 1, skips hidden fields"""
-
-        formatted = {}
-
-        for field_name, value in entry.get_attributes_dict().items():
-            if field_name in self.config['hidden_fields']:
-                continue
-
-            if len(value) > 1:
-                formatted[field_name] = value
-            else:
-                formatted[field_name] = value[0]
-
-        return formatted
-
     def result(self, as_dict=False):
         if as_dict:
-            return [self.props_to_str(e) for e in self.entries]
-
-        if self.count == 0:
-            return []
-        elif self.count == 1:
-            return self.entries[0]
+            return [props_to_str(e, skip_fields=self.config['hidden_fields']) for e in self.entries]
 
         return self.entries
 
@@ -64,20 +44,17 @@ class Service(object):
         return app.config[self.__config_name__]
 
     @property
-    def vendor_name(self):
-        if 'forestFunctionality' in self.conn.server.info.other:
-            return VENDOR_MICROSOFT
-
-        return VENDOR_UNKNOWN
+    def dirtype(self):
+        return app.config['LAPDANCE_LDAP_DIRTYPE']
 
     @property
     def _microsoft_ext(self):
-        self._raise_if_incompatible_with(VENDOR_MICROSOFT)
+        self._raise_if_incompatible_with('ad')
         return self.conn.extend.microsoft
 
-    def _raise_if_incompatible_with(self, vendor):
-        if vendor != self.vendor_name:
-            raise LapdanceError(message='Operation not available for this directory server', status_code=500)
+    def _raise_if_incompatible_with(self, dirtype):
+        if dirtype != self.dirtype:
+            raise LapdanceError(message='Operation not compatible with this directory server', status_code=500)
 
     def _get_matching(self, query_filter=None, raise_on_empty=False):
         """Perform LDAP query
@@ -93,14 +70,14 @@ class Service(object):
             raise_on_empty=raise_on_empty
         )
 
-    def get_many(self, params=None, **kwargs):
+    def get_many(self, **kwargs):
         """Returns a list of entries matching the query params"""
 
         as_dict = kwargs.pop('as_dict', True)
         return self._get_matching(
-            query_filter=params.pop('filter', ''),
+            query_filter=kwargs.pop('filter', ''),
             **kwargs,
-        ).result(as_dict=as_dict)
+        ).result(as_dict=as_dict) or []
 
     def get_one(self, id_value, raise_on_empty=True, as_dict=False):
         """Returns a single entry"""
@@ -121,7 +98,11 @@ class Service(object):
         obj.save()
 
     def create(self, payload):
-        self.model(**payload).save()
+        fields = self.config['fields']
+
+        self.conn.add(dn="{0}={1},{2}".format(fields['id']['ldap_name'], payload['id'], self.model.base_dn),
+                      object_class=self.config['classes'],
+                      attributes={fields[k]['ldap_name']: v for k, v in payload.items()})
 
     def delete(self, query_id):
         obj = self.get_one(query_id)
