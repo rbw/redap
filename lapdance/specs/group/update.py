@@ -15,7 +15,7 @@ group_update = {
         group_body,
     ],
     'definitions': {
-        **get_group_def(required_fields=[]),
+        **get_group_def(),
         **op_success_def,
         **op_error_def,
     },

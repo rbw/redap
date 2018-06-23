@@ -21,7 +21,7 @@ group_id_path = {
 group_body = {
     'type': 'object',
     'name': 'body',
-    'required': False,
+    'required': True,
     'in': 'body',
     'schema': {
         '$ref': '#/definitions/Group'
