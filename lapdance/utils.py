@@ -20,12 +20,22 @@ def generate_apikey_table(api_keys):
     return '\n'.join(table)
 
 
-def generate_spec_def(name, config, required_fields=False):
-    return {
-        name: {
-            'required': config['required_fields'] if not required_fields else [],
-            'properties': {k: {'type': v['type']} for k, v in config['fields'].items()}
+def generate_spec_def(schema_name, config):
+    fields = {
+        'required': [],
+        'properties': {}
+    }
+
+    for name, field in config['fields'].items():
+        fields['properties'][name] = {
+            'type': field['type'],
         }
+
+        if field.get('required'):
+            fields['required'].append(name)
+
+    return {
+        schema_name: fields
     }
 
 
@@ -47,10 +57,6 @@ def props_to_str(entry, **kwargs):
             formatted[field_name] = value
 
     return formatted
-
-
-def build_dn(rdn, base_dn):
-    return rdn and "{0},{1}".format(rdn, base_dn) or base_dn
 
 
 def validation_error(*args):
@@ -83,9 +89,14 @@ def route(bp, *args, **kwargs):
             if method == 'GET':  # Inject _params
                 url = furl(request.url)
                 inner_kwargs['_params'] = dict(url.query.params)
-            elif method in ['POST', 'PUT']:  # Validate and inject payload on insert / update operations
-                validate(request.get_json(), specs=spec, validation_error_handler=validation_error)
-                inner_kwargs['_payload'] = request.get_json()
+            elif method in ['POST', 'PUT']:
+                # Inject validated parameters on insert / update operations (if a body is expected)
+                print(spec)
+                if any(p for p in spec['parameters'] if p['name'] == 'body' and p['required']):
+                    if method == 'POST':
+                        validate(request.get_json(), specs=spec, validation_error_handler=validation_error)
+
+                    inner_kwargs['_payload'] = request.get_json()
 
             response = f(*inner_args, **inner_kwargs)
             if isinstance(response, str):
