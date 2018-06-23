@@ -6,20 +6,21 @@ defaults_freeipa = {
             'top',
             'groupofnames',
             'nestedgroup',
+            'posixGroup',
             'ipausergroup',
             'ipaobject'
         ],
-        'required_fields': [
-            'id', 'name'
-        ],
+        'relative_dn': 'cn=groups,cn=accounts',
         'fields': {
             'id': {
                 'type': 'string',
                 'ldap_name': 'cn'
             },
-            'gid': {
+            'gid_number': {
                 'type': 'integer',
-                'ldap_name': 'gidNumber'
+                'ldap_name': 'gidNumber',
+                'default': -1,
+                'required': False,
             },
             'description': {
                 'type': 'string',
@@ -30,33 +31,34 @@ defaults_freeipa = {
     'user': {
         'classes': [
             'top',
+            'inetorgperson',
             'person',
             'organizationalperson',
-            'inetorgperson',
             'inetuser',
             'posixaccount',
             'ipaobject',
         ],
-        'required_fields': [
-            'id', 'gid', 'uidNumber', 'name', 'first_name', 'last_name',
-            'shell', 'home', 'email'
-        ],
+        'relative_dn': 'cn=users,cn=accounts',
         'fields': {
             'id': {
                 'type': 'string',
-                'ldap_name': 'uid'
+                'ldap_name': 'uid',
             },
-            'uidNumber': {
+            'uid_number': {
                 'type': 'integer',
-                'ldap_name': 'uidNumber'
+                'ldap_name': 'uidNumber',
+                'default': -1,
+                'required': False,
             },
-            'gid': {
+            'gid_number': {
                 'type': 'integer',
-                'ldap_name': 'gidNumber'
+                'ldap_name': 'gidNumber',
+                'default': -1,
+                'required': False,
             },
             'home': {
                 'type': 'string',
-                'ldap_name': 'homedirectory'
+                'ldap_name': 'homedirectory',
             },
             'shell': {
                 'type': 'string',
