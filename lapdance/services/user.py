@@ -2,7 +2,7 @@
 
 from ldap3 import MODIFY_REPLACE
 from lapdance.models import LDAPUser
-from .base import Service, VENDOR_MICROSOFT
+from .base import Service
 
 # UserAccountControl flags
 UAC_PW_NEVER_EXPIRES = 66048
@@ -15,6 +15,7 @@ class UserService(Service):
     __config_name__ = 'LAPDANCE_LDAP_USER'
 
     def _set_account_control(self, user_id, flag):
+        self._raise_if_incompatible_with('ad')
         user = self.get_one(user_id)
         user.userAccountControl = [(MODIFY_REPLACE, [flag])]
 
@@ -35,7 +36,7 @@ class UserService(Service):
         user_dn = self.get_one(user_id).dn
 
         if str(include_nested).lower() in [str(1), 'true']:
-            self._raise_if_incompatible_with(VENDOR_MICROSOFT)
+            self._raise_if_incompatible_with('ad')
             kwargs['filter'] = '(member:1.2.840.113556.1.4.1941:={0})'.format(user_dn)
         else:
             kwargs['filter'] = '(member={0})'.format(user_dn)
