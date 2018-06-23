@@ -4,7 +4,6 @@ schema = {
     'classes': {
         'required': True,
         'type': 'list',
-        'default': []
     },
     'relative_dn': {
         'required': False,
@@ -23,6 +22,7 @@ schema = {
     'fields': {
         'type': 'dict',
         'allow_unknown': True,
+        'required': True,
         'valueschema': {
             'type': 'dict',
             'schema': {
