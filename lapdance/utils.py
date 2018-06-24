@@ -91,7 +91,6 @@ def route(bp, *args, **kwargs):
                 inner_kwargs['_params'] = dict(url.query.params)
             elif method in ['POST', 'PUT']:
                 # Inject validated parameters on insert / update operations (if a body is expected)
-                print(spec)
                 if any(p for p in spec['parameters'] if p['name'] == 'body' and p['required']):
                     if method == 'POST':
                         validate(request.get_json(), specs=spec, validation_error_handler=validation_error)
