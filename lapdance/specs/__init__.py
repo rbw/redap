@@ -12,6 +12,7 @@ from .user.enable import user_enable
 from .user.disable import user_disable
 from .user.create import user_create
 from .user.update import user_update
+from .user.authenticate import user_authenticate
 
 # Group specs
 from .group.one import group_one
