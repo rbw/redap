@@ -11,8 +11,31 @@ from lapdance.specs.constants import USER_PASSWORD
 user_password = {
     'tags': tags,
     'summary': USER_PASSWORD,
-    'parameters': [user_id_path],
+    'parameters': [
+        user_id_path,
+        {
+            'type': 'object',
+            'name': 'body',
+            'required': True,
+            'in': 'body',
+            'schema': {
+                '$ref': '#/definitions/PasswordChange'
+            }
+        }
+    ],
     'definitions': {
+        'PasswordChange': {
+            'type': 'object',
+            'required': ['new_password'],
+            'properties': {
+                'new_password': {
+                    'type': 'string'
+                },
+                'old_password': {
+                    'type': 'string'
+                }
+            }
+        },
         **get_user_def(),
         **op_success_def,
         **op_ldap_error_def,
