@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from lapdance.specs.group import get_group_def, tags, group_id_path
-from lapdance.specs.common import (
+from lapdance.specs.definitions import (
     op_error, op_error_def
 )
-from lapdance.specs.constants import GROUP_ONE
+from lapdance.specs.descriptions import GROUP_ONE
 
 group_one = {
     'tags': tags,

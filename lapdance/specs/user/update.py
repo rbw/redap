@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from lapdance.specs.user import tags, user_id_path, user_body, get_user_def
-from lapdance.specs.common import (
+from lapdance.specs.definitions import (
     op_success, op_success_def,
     op_error, op_error_def
 )
-from lapdance.specs.constants import USER_UPDATE
+from lapdance.specs.descriptions import USER_UPDATE
 
 
 user_update = {

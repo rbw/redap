@@ -2,7 +2,7 @@
 
 from lapdance.specs.group import ldap_operation_spec
 from lapdance.specs.group import tags, group_id_path
-from lapdance.specs.constants import GROUP_MEMBER_ADD
+from lapdance.specs.descriptions import GROUP_MEMBER_ADD
 from copy import deepcopy
 
 group_member_add = deepcopy(ldap_operation_spec)

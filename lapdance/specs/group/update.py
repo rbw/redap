@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from lapdance.specs.group import get_group_def, tags, group_id_path, group_body
-from lapdance.specs.common import (
+from lapdance.specs.definitions import (
     op_success, op_success_def,
     op_error, op_error_def
 )
-from lapdance.specs.constants import GROUP_UPDATE
+from lapdance.specs.descriptions import GROUP_UPDATE
 
 group_update = {
     'tags': tags,

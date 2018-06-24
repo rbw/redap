@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from lapdance.specs.user import tags
-from lapdance.specs.constants import USER_MANY
-from lapdance.specs.common import (
+from lapdance.specs.descriptions import USER_MANY
+from lapdance.specs.definitions import (
     op_error, op_error_def, many_filter_param
 )
 

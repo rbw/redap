@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from lapdance.specs.user import get_user_def, tags, user_id_path
-from lapdance.specs.common import (
+from lapdance.specs.definitions import (
     op_error, op_error_def
 )
-from lapdance.specs.constants import USER_ONE
+from lapdance.specs.descriptions import USER_ONE
 
 user_one = {
     'tags': tags,

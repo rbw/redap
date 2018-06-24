@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from lapdance.specs.user import tags
-from lapdance.specs.common import (
+from lapdance.specs.definitions import (
     op_success, op_success_def,
     op_ldap_error, op_ldap_error_def,
     op_error, op_error_def
 )
-from lapdance.specs.constants import USER_AUTHENTICATE
+from lapdance.specs.descriptions import USER_AUTHENTICATE
 
 user_authenticate = {
     'tags': tags,

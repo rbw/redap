@@ -2,8 +2,8 @@
 
 from lapdance.specs.user.many import user_many
 from lapdance.specs.group import tags, group_id_path
-from lapdance.specs.constants import GROUP_MEMBERS
-from lapdance.specs.common import include_nested_param
+from lapdance.specs.descriptions import GROUP_MEMBERS
+from lapdance.specs.definitions import include_nested_param
 from copy import deepcopy
 
 group_members = deepcopy(user_many)

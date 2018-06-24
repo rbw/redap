@@ -4,7 +4,7 @@ from functools import partial
 
 from lapdance.settings import LAPDANCE_LDAP_GROUP
 from lapdance.utils import generate_spec_def
-from lapdance.specs.common import (
+from lapdance.specs.definitions import (
     op_success, op_success_def,
     op_ldap_error, op_ldap_error_def,
     op_error, op_error_def
