@@ -12,6 +12,14 @@ Adding LDAP support to an application can be a time-consuming, tedious and compl
 
 Lapdance creates an abstraction layer on top of LDAP, in its own little habitat—or micro-service, if you will.
 
+
+Project status
+-----------
+Early stages of development. There will be bugs.
+
+Needless to say: create an Issue if you've found a bug, or a PR if you have a code contribution.
+
+
 Description
 ------
 Powered by Flask—robust and customizable enough for production use—simple enough for grandma to operate.
@@ -22,8 +30,8 @@ It's partly inspired by, and is conceptually similar to Addict—but offers more
 - API key authorization
 - Custom schemas
 - Simplified Query Language
-- Robust server logging
 - LDAP debugging
+- Robust backend
 - Production-ready Docker image
 - SwaggerUI
 
