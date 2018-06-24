@@ -24,7 +24,7 @@ It's partly inspired by, and is conceptually similar to Addict—but offers more
 - Custom schemas
 - Simplified Query Language
 - LDAP debugging
-- Robust backend
+- Robust application stack
 - Production-ready Docker image
 - SwaggerUI
 
