@@ -21,6 +21,11 @@ defaults_freeipa = {
                 'type': 'string',
                 'ref': 'cn'
             },
+            'gid_number': {
+                'type': 'integer',
+                'ref': 'gidNumber',
+                'default': -1,
+            },
             'description': {
                 'type': 'string',
                 'ref': 'description'
