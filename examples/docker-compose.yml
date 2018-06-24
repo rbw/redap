@@ -1,6 +1,6 @@
 version: '2'
 services:
-  web:
+  lapdance:
     image: rbw0/lapdance:latest
     volumes:
       - '~/.lapdance/settings:/app/settings'
