@@ -11,8 +11,6 @@ class GroupService(Service):
 
     @property
     def _users(self):
-        """Imports and returns users service"""
-
         from lapdance.services import users
         return users
 

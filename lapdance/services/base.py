@@ -10,7 +10,7 @@ ACTIVE_DIRECTORY = 'ad'
 FREEIPA = 'freeipa'
 
 ADD = 'ADD'
-UPDATE = MODIFY_REPLACE
+REPLACE = MODIFY_REPLACE
 
 
 class ResponseHandler(object):
@@ -43,8 +43,6 @@ class Service(object):
 
     @property
     def model(self):
-        """Returns instance of the associated model class"""
-
         return self.__model__()
 
     @property
@@ -104,16 +102,16 @@ class Service(object):
             else:
                 value = params[name]
 
-            if operation == UPDATE:
+            if operation == REPLACE:
                 value = [(operation, value, )]
 
             payload[field['ref']] = value
 
         return payload
 
-    def _modify(self, id_value, params):
+    def _modify(self, id_value, params, operation=REPLACE):
         self.conn.modify(dn=self.get_one(id_value).dn,
-                         changes=self._create_payload(params, UPDATE))
+                         changes=self._create_payload(params, operation))
 
     def _add(self, params):
         self.conn.add(dn=self._get_entry_dn(params['id'], params),
@@ -140,4 +138,4 @@ class Service(object):
         self._add(params)
 
     def delete(self, id_value):
-        self.conn.delete(self._get_entry_dn(id_value))
+        self.conn.delete(self.get_one(id_value).dn)
