@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .base import Service
+from .base import Service, ACTIVE_DIRECTORY
 from lapdance.exceptions import LapdanceError
 from lapdance.models import LDAPGroup
 
@@ -20,7 +20,7 @@ class GroupService(Service):
         group_dn = self.get_one(group_id).dn
 
         if str(include_nested).lower() in [str(1), 'true']:
-            self._raise_if_incompatible_with('ad')
+            self._raise_if_incompatible_with(ACTIVE_DIRECTORY)
             kwargs['filter'] = '(memberOf:1.2.840.113556.1.4.1941:={0})'.format(group_dn)
         else:
             kwargs['filter'] = '(memberOf={0})'.format(group_dn)
