@@ -6,6 +6,12 @@ from lapdance.core import ldap
 from lapdance.exceptions import LapdanceError
 from lapdance.utils import props_to_str
 
+ACTIVE_DIRECTORY = 'ad'
+FREEIPA = 'freeipa'
+
+ADD = 'ADD'
+UPDATE = MODIFY_REPLACE
+
 
 class ResponseHandler(object):
     def __init__(self, response, config, raise_on_empty=False):
@@ -32,6 +38,10 @@ class Service(object):
         return ldap.connection
 
     @property
+    def is_secure(self):
+        return self.config['LDAP_USE_SSL']
+
+    @property
     def model(self):
         """Returns instance of the associated model class"""
 
@@ -51,7 +61,7 @@ class Service(object):
 
     @property
     def _microsoft_ext(self):
-        self._raise_if_incompatible_with('ad')
+        self._raise_if_incompatible_with(ACTIVE_DIRECTORY)
         return self.conn.extend.microsoft
 
     def _raise_if_incompatible_with(self, dirtype):
@@ -65,56 +75,62 @@ class Service(object):
             raise_on_empty=raise_on_empty
         )
 
-    def _get_entry_dn(self, id_value):
-        return "{0}={1},{2},{3}".format(self.fields['id']['ldap_name'],
-                                        id_value,
-                                        self.config['relative_dn'],
-                                        self.model.base_dn)
+    def get_field_by_ref(self, ref_name):
+        return next((n for n, f in self.fields.items() if f['ref'] == ref_name), None)
 
-    def _create_payload(self, params, operation=None):
-        """Create LDAP payload from dict"""
+    def _get_entry_dn(self, id_value, params):
+        if self.dirtype == ACTIVE_DIRECTORY:
+            cn_key = self.get_field_by_ref('cn')
+            if cn_key is None:
+                raise LapdanceError(message="Missing 'cn' ref field, cannot continue", status_code=500)
 
+            rdn = 'cn={0}'.format(params[cn_key])
+        else:
+            rdn = '{0}={1}'.format(self.fields['id']['ref'], id_value)
+
+        return '{0},{1},{2}'.format(rdn, self.config['relative_dn'], self.model.base_dn)
+
+    def _create_payload(self, params, operation):
         payload = {}
 
         for name, field in self.fields.items():
             # Look for missing props if operation is None (add) and set defaults.
             # No need to check for constraints as the input has been validated already.
             if name not in params:
-                if 'default' in field and operation is None:
+                if 'default' in field and operation == ADD:
                     value = field['default']
                 else:
                     continue
             else:
                 value = params[name]
 
-            if operation:
+            if operation == UPDATE:
                 value = [(operation, value, )]
 
-            payload[field['ldap_name']] = value
+            payload[field['ref']] = value
 
         return payload
 
     def _modify(self, id_value, params):
-        self.conn.modify(dn=self._get_entry_dn(id_value),
-                         changes=self._create_payload(params, MODIFY_REPLACE))
+        self.conn.modify(dn=self.get_one(id_value).dn,
+                         changes=self._create_payload(params, UPDATE))
 
     def _add(self, params):
-        self.conn.add(dn=self._get_entry_dn(params['id']),
+        self.conn.add(dn=self._get_entry_dn(params['id'], params),
                       object_class=self.config['classes'],
-                      attributes=self._create_payload(params))
+                      attributes=self._create_payload(params, ADD))
 
-    def get_many(self, **kwargs):
-        as_dict = kwargs.pop('as_dict', True)
+    def get_many(self, as_dict=True, **kwargs):
         return self._get_matching(
             query_filter=kwargs.pop('filter', ''),
             **kwargs,
         ).result(as_dict=as_dict) or []
 
-    def get_one(self, id_value, raise_on_empty=True, as_dict=False):
+    def get_one(self, id_value, as_dict=False):
         id_field = self.config['fields']['id']
         return self._get_matching(
-            query_filter='({0}={1})'.format(id_field['ldap_name'], id_value),
-            raise_on_empty=raise_on_empty,
+            query_filter='({0}={1})'.format(id_field['ref'], id_value),
+            raise_on_empty=True,
         ).result(as_dict=as_dict)[0]
 
     def update(self, id_value, params):
@@ -123,5 +139,5 @@ class Service(object):
     def create(self, params):
         self._add(params)
 
-    def delete(self, query_id):
-        self.conn.delete(self._get_entry_dn(query_id))
+    def delete(self, id_value):
+        self.conn.delete(self._get_entry_dn(id_value))
