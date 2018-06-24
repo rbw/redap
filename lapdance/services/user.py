@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from ldap3 import MODIFY_REPLACE
-from ldap3.core.exceptions import LDAPBindError
+from ldap3 import MODIFY_REPLACE, MODIFY_ADD
+from ldap3.core.exceptions import LDAPOperationResult
 from lapdance.models import LDAPUser
 from lapdance.core import ldap
+from lapdance.exceptions import LapdanceError
 from .base import Service, ACTIVE_DIRECTORY
 
 # UserAccountControl flags
@@ -18,8 +19,9 @@ class UserService(Service):
 
     def _set_account_control(self, user_id, flag):
         self._raise_if_incompatible_with(ACTIVE_DIRECTORY)
-        user = self.get_one(user_id)
-        user.userAccountControl = [(MODIFY_REPLACE, [flag])]
+        payload = {'userAccountControl': [(MODIFY_REPLACE, [flag])]}
+        self.conn.modify(dn=self.get_one(user_id).dn,
+                         changes=payload)
 
     def is_member_of(self, user_dn, group_dn):
         id_attr = self.config['fields']['id']['ref']
@@ -27,8 +29,6 @@ class UserService(Service):
 
     @property
     def _groups(self):
-        """Imports and returns groups service"""
-
         from lapdance.services import groups
         return groups
 
@@ -49,9 +49,13 @@ class UserService(Service):
         try:
             conn = ldap.connect(user_dn, password)
             conn.unbind()
-            return True
-        except LDAPBindError:
-            return False
+        except LDAPOperationResult as e:
+            if e.description == 'invalidCredentials':
+                raise LapdanceError(message='Invalid username or password', status_code=401)
+            else:
+                raise
+
+        return True
 
     def set_password(self, user_id, **kwargs):
         user = self.get_one(user_id)
