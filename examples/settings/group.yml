@@ -3,3 +3,6 @@
 #
 # Please see https://github.com/rbw0/lapdance/wiki/User-and-Group-containers for more info
 
+{
+  relative_dn: cn=groups,cn=accounts
+}

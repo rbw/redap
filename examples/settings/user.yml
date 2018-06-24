@@ -2,3 +2,7 @@
 # Not specifying a `directory_type` requires you to populate this configuration manually.
 #
 # Please see https://github.com/rbw0/lapdance/wiki/User-and-Group-containers for more info
+
+{
+  relative_dn: cn=users,cn=accounts
+}

@@ -9,18 +9,18 @@ secret: Secret123
 
 # Directory server type
 # ---------------------
-# Can be one of: ['ad', 'freeipa'] (more will be added in the future)
+# Currently, one of: ['ad', 'freeipa', 'custom']
 #
 # While not required, setting a `directory_type` can be useful as it:
 # 1) Enables directory-specific functionality
 # 2) Configures User and Group overridable schema defaults (object classes, field mappings etc)
 #
 # Not specifying a directory type defaults to 'custom', requiring you to define at least -
-# `classes` and `fields` in the User and Group schemas manually.
+# `classes` and `fields` in the User and Group schemas.
 #
 # Check out the wiki for more info.
 # https://github.com/rbw0/lapdance/wiki/Working-with-schemas
-directory_type: freeipa
+directory_type: ad
 
 # Return details about LDAP errors to the client
 return_error_details: true
