@@ -7,6 +7,14 @@ many_filter_param = {
     'required': False
 }
 
+include_nested_param = {
+    'name': 'include_nested',
+    'in': 'query',
+    'type': 'boolean',
+    'default': False,
+    'required': False
+}
+
 op_success_def = {
     'ResponseSuccess': {
         'type': 'object',
