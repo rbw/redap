@@ -33,7 +33,7 @@ def create_app(package_name, *args, **kwargs):
     LDAPUser.init_model(
         object_classes=user_config['classes'],
         base_dn=base_dn,
-        entry_rdn=[user_fields['id']['ldap_name']],
+        entry_rdn=[user_fields['id']['ref']],
         fields=user_fields
     )
 
@@ -41,7 +41,7 @@ def create_app(package_name, *args, **kwargs):
     LDAPGroup.init_model(
         object_classes=group_config['classes'],
         base_dn=base_dn,
-        entry_rdn=group_fields['id']['ldap_name'],
+        entry_rdn=group_fields['id']['ref'],
         fields=group_fields,
     )
 

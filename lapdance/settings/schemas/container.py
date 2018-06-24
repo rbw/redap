@@ -26,18 +26,13 @@ schema = {
         'valueschema': {
             'type': 'dict',
             'schema': {
-                'ldap_name': {
+                'ref': {
                     'type': 'string',
                     'required': True
                 },
                 'type': {
                     'type': 'string',
                     'required': True
-                },
-                'required': {
-                    'type': 'boolean',
-                    'required': False,
-                    'default': True
                 },
                 'default': {
                     'required': False

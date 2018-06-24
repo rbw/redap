@@ -10,21 +10,20 @@ defaults_freeipa = {
             'ipausergroup',
             'ipaobject'
         ],
-        'relative_dn': 'cn=groups,cn=accounts',
+        'hidden_fields': [
+            'gid_number'
+        ],
+        'required_fields': [
+            'id', 'description'
+        ],
         'fields': {
             'id': {
                 'type': 'string',
-                'ldap_name': 'cn'
-            },
-            'gid_number': {
-                'type': 'integer',
-                'ldap_name': 'gidNumber',
-                'default': -1,
-                'required': False,
+                'ref': 'cn'
             },
             'description': {
                 'type': 'string',
-                'ldap_name': 'description'
+                'ref': 'description'
             },
         }
     },
@@ -38,47 +37,50 @@ defaults_freeipa = {
             'posixaccount',
             'ipaobject',
         ],
-        'relative_dn': 'cn=users,cn=accounts',
+        'hidden_fields': [
+            'uid_number', 'gid_number'
+        ],
+        'required_fields': [
+            'id', 'home', 'shell', 'name', 'email', 'last_name', 'first_name'
+        ],
         'fields': {
             'id': {
                 'type': 'string',
-                'ldap_name': 'uid',
+                'ref': 'uid',
             },
             'uid_number': {
                 'type': 'integer',
-                'ldap_name': 'uidNumber',
+                'ref': 'uidNumber',
                 'default': -1,
-                'required': False,
             },
             'gid_number': {
                 'type': 'integer',
-                'ldap_name': 'gidNumber',
+                'ref': 'gidNumber',
                 'default': -1,
-                'required': False,
             },
             'home': {
                 'type': 'string',
-                'ldap_name': 'homedirectory',
+                'ref': 'homedirectory',
             },
             'shell': {
                 'type': 'string',
-                'ldap_name': 'loginshell',
+                'ref': 'loginshell',
             },
             'name': {
                 'type': 'string',
-                'ldap_name': 'cn'
+                'ref': 'cn'
             },
             'email': {
                 'type': 'string',
-                'ldap_name': 'mail'
+                'ref': 'mail'
             },
             'last_name': {
                 'type': 'string',
-                'ldap_name': 'sn'
+                'ref': 'sn'
             },
             'first_name': {
                 'type': 'string',
-                'ldap_name': 'givenName'
+                'ref': 'givenName'
             }
         }
     }

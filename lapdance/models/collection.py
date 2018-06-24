@@ -23,7 +23,7 @@ class LDAPCollection(ldap.Model):
         :param kwargs: Model properties
         """
 
-        attributes = {k: ldap.Attribute(v['ldap_name']) for k, v in kwargs.pop('fields').items()}
+        attributes = {k: ldap.Attribute(v['ref']) for k, v in kwargs.pop('fields').items()}
         attributes.update(**kwargs)
 
         # Create new instance of ldap.Entry using `type` and have it registered.
