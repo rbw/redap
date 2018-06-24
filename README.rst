@@ -13,13 +13,6 @@ Adding LDAP support to an application can be a time-consuming, tedious and compl
 Lapdance creates an abstraction layer on top of LDAP, in its own little habitat—or micro-service, if you will.
 
 
-Project status
------------
-Early stages of development. There will be bugs.
-
-Needless to say: create an Issue if you've found a bug, or a PR if you have a code contribution.
-
-
 Description
 ------
 Powered by Flask—robust and customizable enough for production use—simple enough for grandma to operate.
@@ -43,9 +36,23 @@ At a higher level, it currently provides:
 The long-term goal is to provide helpers for common operations in other, also popular LDAP directory servers.
 
 
-Documentation
+Getting started
 -------------
 Check out `the wiki <https://github.com/rbw0/lapdance/wiki>`_ for guides and other info.
+
+
+Project status
+-----------
+Early stages of development. There might be a bug or three.
+
+Needless to say: create an Issue if you've found a bug, or a PR if you have a code contribution.
+
+**Being worked on**
+
+- tests
+- nginx ssl
+- pagination
+- more directory types
 
 
 Author
