@@ -28,9 +28,15 @@ It's partly inspired by, and is conceptually similar to Addict—but offers more
 - Production-ready Docker image
 - SwaggerUI
 
+
+Getting started
+-------------
+Check out `the wiki <https://github.com/rbw0/lapdance/wiki>`_ for guides and other info.
+
+
 Quick demo?
 --------
-If you have **docker-compose** installed—run the following commands to *download, install, configure* and *start* the full server stack (with a connection ready to demo1.freeipa.org) and *generate an API* in 30 secs or so.
+If you have **docker-compose** installed—run the following commands to *download, install, configure* and *start* the full server stack (with a connection ready to demo1.freeipa.org) in ~30 seconds.
 
 .. code-block::
 
@@ -38,21 +44,25 @@ If you have **docker-compose** installed—run the following commands to *downlo
   $ ~/.lapdance/scripts/keys.sh add "My first API key"
 
 
-- Now point a browser to *http://127.0.0.1:5000/api-docs* , click **Authorize** and provide the generated API key.
+...then point a browser to *http://127.0.0.1:5000/api-docs*, click **Authorize** and provide the generated API key.
 
-
-
-
-Getting started
--------------
-Check out `the wiki <https://github.com/rbw0/lapdance/wiki>`_ for guides and other info.
 
 
 Project status
 -----------
 Early stages of development. There might be a bug or three.
 
+At a high level, Lapdance currently provides:
+
+- Solid CRUD support for LDAP-conformant directory servers
+- Support for extended operations in Active Directory 
+
+The long-term goal is to provide helpers for common operations in other, also popular directory servers.
+
+
+
 Needless to say: create an Issue if you've found a bug, or a PR if you have a code contribution.
+
 
 **Being worked on**
 
@@ -61,13 +71,6 @@ Needless to say: create an Issue if you've found a bug, or a PR if you have a co
 - pagination
 - more directory types
 
-
-At a high level, Lapdance currently provides:
-
-- Solid CRUD support for LDAP-conformant directory servers
-- Support for extended operations in Active Directory 
-
-The long-term goal is to provide helpers for common operations in other, also popular directory servers.
 
 
 
