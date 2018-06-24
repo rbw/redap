@@ -14,7 +14,7 @@ bp = Blueprint('groups', __name__, url_prefix='/groups')
 
 @route(bp, '/', spec=group_many)
 def get_many(_params):
-    return groups.get_many(_params)
+    return groups.get_many(**_params)
 
 
 @route(bp, '/', method='POST', spec=group_create)
@@ -54,5 +54,5 @@ def remove_member(group_id, user_id):
 @route(bp, '/<group_id>', method='PUT', spec=group_update)
 def update(group_id, _payload):
     groups.update(group_id, _payload)
-    return 'Group {0} updated'.format(_payload['id'])
+    return 'Group {0} updated'.format(group_id)
 

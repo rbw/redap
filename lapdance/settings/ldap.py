@@ -5,6 +5,7 @@ from ldap3.utils.log import set_library_log_detail_level, OFF, BASIC, NETWORK, E
 from .loader import user_settings, group_settings, ldap_settings
 
 LAPDANCE_BASE_DN = ldap_settings['base_dn']
+LAPDANCE_LDAP_DIRTYPE = ldap_settings['directory_type']
 LAPDANCE_LDAP_USER = user_settings
 LAPDANCE_LDAP_GROUP = group_settings
 
@@ -20,10 +21,11 @@ LDAP_CONNECT_TIMEOUT = ldap_settings['conn_timeout']
 LDAP_REQUIRE_CERT = ssl.CERT_NONE
 LDAP_USE_TLS = False
 LDAP_RAISE_EXCEPTIONS = True
+FORCE_ATTRIBUTE_VALUE_AS_LIST = True
 
 # LDAP3 Log-level
 log_level_mappings = {
-    'disabled': OFF,
+    'off': OFF,
     'basic': BASIC,
     'network': NETWORK,
     'extended': EXTENDED

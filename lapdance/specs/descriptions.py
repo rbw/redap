@@ -11,6 +11,7 @@ USER_MEMBERSHIPS = 'Get list of groups for user'
 USER_PASSWORD = 'Sets new password'
 USER_PW_NEVER_EXPIRES = 'Sets password-never-expires for user'
 USER_UNLOCK = 'Unlocks the user account'
+USER_AUTHENTICATE = 'Test user authentication'
 
 GROUP_CREATE = 'Create new group'
 GROUP_UPDATE = 'Update group'

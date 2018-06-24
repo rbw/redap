@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 
 from flask import current_app as app
+from ldap3 import MODIFY_REPLACE
 from lapdance.core import ldap
 from lapdance.exceptions import LapdanceError
+from lapdance.utils import props_to_str
 
-VENDOR_MICROSOFT = 'MICRO$OFT'
-VENDOR_UNKNOWN = 'UNKNOWN'
+ACTIVE_DIRECTORY = 'ad'
+FREEIPA = 'freeipa'
+
+ADD = 'ADD'
+REPLACE = MODIFY_REPLACE
 
 
 class ResponseHandler(object):
@@ -17,30 +22,9 @@ class ResponseHandler(object):
         if self.count == 0 and raise_on_empty:
             raise LapdanceError(message='No such object', status_code=404)
 
-    def props_to_str(self, entry):
-        """Converts value array to string if count <= 1, skips hidden fields"""
-
-        formatted = {}
-
-        for field_name, value in entry.get_attributes_dict().items():
-            if field_name in self.config['hidden_fields']:
-                continue
-
-            if len(value) > 1:
-                formatted[field_name] = value
-            else:
-                formatted[field_name] = value[0]
-
-        return formatted
-
     def result(self, as_dict=False):
         if as_dict:
-            return [self.props_to_str(e) for e in self.entries]
-
-        if self.count == 0:
-            return []
-        elif self.count == 1:
-            return self.entries[0]
+            return [props_to_str(e, skip_fields=self.config['hidden_fields']) for e in self.entries]
 
         return self.entries
 
@@ -54,9 +38,11 @@ class Service(object):
         return ldap.connection
 
     @property
-    def model(self):
-        """Returns instance of the associated model class"""
+    def is_secure(self):
+        return self.config['LDAP_USE_SSL']
 
+    @property
+    def model(self):
         return self.__model__()
 
     @property
@@ -64,65 +50,92 @@ class Service(object):
         return app.config[self.__config_name__]
 
     @property
-    def vendor_name(self):
-        if 'forestFunctionality' in self.conn.server.info.other:
-            return VENDOR_MICROSOFT
+    def fields(self):
+        return self.config['fields']
 
-        return VENDOR_UNKNOWN
+    @property
+    def dirtype(self):
+        return app.config['LAPDANCE_LDAP_DIRTYPE']
 
     @property
     def _microsoft_ext(self):
-        self._raise_if_incompatible_with(VENDOR_MICROSOFT)
+        self._raise_if_incompatible_with(ACTIVE_DIRECTORY)
         return self.conn.extend.microsoft
 
-    def _raise_if_incompatible_with(self, vendor):
-        if vendor != self.vendor_name:
-            raise LapdanceError(message='Operation not available for this directory server', status_code=500)
+    def _raise_if_incompatible_with(self, dirtype):
+        if dirtype != self.dirtype:
+            raise LapdanceError(message='Operation not compatible with this directory server', status_code=500)
 
     def _get_matching(self, query_filter=None, raise_on_empty=False):
-        """Perform LDAP query
-
-        :param query_filter: Query filter string
-        :param raise_on_empty: Raise exception if no records returned
-        :return: ResponseHandler object
-        """
-
         return ResponseHandler(
             self.model.query.filter(query_filter),
             self.config,
             raise_on_empty=raise_on_empty
         )
 
-    def get_many(self, params=None, **kwargs):
-        """Returns a list of entries matching the query params"""
+    def get_field_by_ref(self, ref_name):
+        return next((n for n, f in self.fields.items() if f['ref'] == ref_name), None)
 
-        as_dict = kwargs.pop('as_dict', True)
+    def _get_entry_dn(self, id_value, params):
+        if self.dirtype == ACTIVE_DIRECTORY:
+            cn_key = self.get_field_by_ref('cn')
+            if cn_key is None:
+                raise LapdanceError(message="Missing 'cn' ref field, cannot continue", status_code=500)
+
+            rdn = 'cn={0}'.format(params[cn_key])
+        else:
+            rdn = '{0}={1}'.format(self.fields['id']['ref'], id_value)
+
+        return '{0},{1},{2}'.format(rdn, self.config['relative_dn'], self.model.base_dn)
+
+    def _create_payload(self, params, operation):
+        payload = {}
+
+        for name, field in self.fields.items():
+            # Look for missing props if operation is None (add) and set defaults.
+            # No need to check for constraints as the input has been validated already.
+            if name not in params:
+                if 'default' in field and operation == ADD:
+                    value = field['default']
+                else:
+                    continue
+            else:
+                value = params[name]
+
+            if operation == REPLACE:
+                value = [(operation, value, )]
+
+            payload[field['ref']] = value
+
+        return payload
+
+    def _modify(self, id_value, params, operation=REPLACE):
+        self.conn.modify(dn=self.get_one(id_value).dn,
+                         changes=self._create_payload(params, operation))
+
+    def _add(self, params):
+        self.conn.add(dn=self._get_entry_dn(params['id'], params),
+                      object_class=self.config['classes'],
+                      attributes=self._create_payload(params, ADD))
+
+    def get_many(self, as_dict=True, **kwargs):
         return self._get_matching(
-            query_filter=params.pop('filter', ''),
+            query_filter=kwargs.pop('filter', ''),
             **kwargs,
-        ).result(as_dict=as_dict)
+        ).result(as_dict=as_dict) or []
 
-    def get_one(self, id_value, raise_on_empty=True, as_dict=False):
-        """Returns a single entry"""
-
+    def get_one(self, id_value, as_dict=False):
         id_field = self.config['fields']['id']
         return self._get_matching(
-            query_filter='({0}={1})'.format(id_field['ldap_name'], id_value),
-            raise_on_empty=raise_on_empty,
+            query_filter='({0}={1})'.format(id_field['ref'], id_value),
+            raise_on_empty=True,
         ).result(as_dict=as_dict)[0]
 
-    def update(self, id_value, payload):
-        """Updates an entry"""
+    def update(self, id_value, params):
+        self._modify(id_value, params)
 
-        obj = self.get_one(id_value)
-        for (k, v) in payload.items():
-            setattr(obj, k, v)
+    def create(self, params):
+        self._add(params)
 
-        obj.save()
-
-    def create(self, payload):
-        self.model(**payload).save()
-
-    def delete(self, query_id):
-        obj = self.get_one(query_id)
-        self.conn.delete(obj.dn)
+    def delete(self, id_value):
+        self.conn.delete(self.get_one(id_value).dn)

@@ -8,7 +8,7 @@ from lapdance.specs import (
     user_one, user_many, user_create, user_delete,
     user_update, user_memberships, user_password,
     user_unlock, user_enable, user_disable,
-    user_pw_never_expires
+    user_pw_never_expires, user_authenticate
 )
 
 bp = Blueprint('users', __name__, url_prefix='/users')
@@ -16,13 +16,19 @@ bp = Blueprint('users', __name__, url_prefix='/users')
 
 @route(bp, '/', spec=user_many)
 def get_many(_params):
-    return users.get_many(_params)
+    return users.get_many(**_params)
 
 
 @route(bp, '/', method='POST', spec=user_create)
 def create(_payload):
     users.create(_payload)
     return 'Created user {0}'.format(_payload['id'])
+
+
+@route(bp, '/authenticate', method='POST', spec=user_authenticate)
+def authenticate(_payload):
+    users.authenticate(_payload['username'], _payload['password'])
+    return 'Authentication successful'
 
 
 @route(bp, '/<user_id>', method='DELETE', spec=user_delete)
@@ -49,7 +55,7 @@ def update(user_id, _payload):
 
 @route(bp, '/<user_id>/password', method='PUT', spec=user_password)
 def set_password(user_id, _payload):
-    users.set_password(user_id, _payload)
+    users.set_password(user_id, **_payload)
     return 'Password set for {0}'.format(user_id)
 
 

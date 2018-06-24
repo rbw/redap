@@ -2,11 +2,10 @@
 
 from functools import wraps
 from furl import furl
-from flasgger import swag_from
+from flasgger import swag_from, validate
 from flask import request, jsonify, current_app as app
 from lapdance.models.apikey import APIKey
 from lapdance.exceptions import LapdanceError
-from sqlalchemy.orm.exc import NoResultFound
 
 
 def generate_apikey_table(api_keys):
@@ -21,17 +20,42 @@ def generate_apikey_table(api_keys):
     return '\n'.join(table)
 
 
-def generate_spec_def(name, config, required_fields=False):
-    return {
-        name: {
-            'required': config['required_fields'] if not required_fields else [],
-            'properties': {k: {'type': v['type']} for k, v in config['fields'].items()}
-        }
+def generate_spec_def(schema_name, config):
+    fields = {
+        'required': config['required_fields'],
+        'properties': {}
     }
 
+    for name, field in config['fields'].items():
+        fields['properties'][name] = {
+            'type': field['type'],
+        }
 
-def build_dn(rdn, base_dn):
-    return rdn and "{0},{1}".format(rdn, base_dn) or base_dn
+    return {schema_name: fields}
+
+
+def props_to_str(entry, **kwargs):
+    """Converts value array to string if count <= 1, skips hidden fields"""
+
+    formatted = {}
+    skip_fields = kwargs.pop('skip_fields', [])
+
+    for field_name, value in entry.get_attributes_dict().items():
+        if field_name in skip_fields:
+            continue
+
+        if len(value) == 1:
+            formatted[field_name] = value[0]
+        elif len(value) < 1:
+            formatted[field_name] = None
+        else:
+            formatted[field_name] = value
+
+    return formatted
+
+
+def validation_error(*args):
+    raise LapdanceError(message=args[0].message, status_code=422)
 
 
 def route(bp, *args, **kwargs):
@@ -58,10 +82,15 @@ def route(bp, *args, **kwargs):
                     raise LapdanceError(message='Unauthorized', status_code=401)
 
             if method == 'GET':  # Inject _params
-                params = furl(request.url).args
-                inner_kwargs['_params'] = dict(params)
-            elif method in ['POST', 'PUT']:  # Inject payload on insert / update operations
-                inner_kwargs['_payload'] = request.get_json()
+                url = furl(request.url)
+                inner_kwargs['_params'] = dict(url.query.params)
+            elif method in ['POST', 'PUT']:
+                # Inject validated parameters on insert / update operations (if a body is expected)
+                if any(p for p in spec['parameters'] if p['name'] == 'body' and p['required']):
+                    if method == 'POST':
+                        validate(request.get_json(), specs=spec, validation_error_handler=validation_error)
+
+                    inner_kwargs['_payload'] = request.get_json()
 
             response = f(*inner_args, **inner_kwargs)
             if isinstance(response, str):

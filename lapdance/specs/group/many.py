@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from lapdance.specs.group import tags
-from lapdance.specs.common import (
+from lapdance.specs.definitions import (
     op_error, op_error_def, many_filter_param
 )
-from lapdance.specs.constants import GROUP_MANY
+from lapdance.specs.descriptions import GROUP_MANY
 
 group_many = {
     'tags': tags,

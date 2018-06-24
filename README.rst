@@ -8,17 +8,21 @@
     HTTP /_/ LDAP directory-agnostic gateway
 
 
+Adding LDAP support to an application can be a time-consuming, tedious and complex task.
+
+Lapdance creates an abstraction layer on top of LDAP, in its own little habitat—or micro-service, if you will.
 
 Description
 ------
 Powered by Flask—robust and customizable enough for production use—simple enough for grandma to operate.
 
-It's partly inspired by, and is conceptually similar to Addict—but offers more sugar:
+It's partly inspired by, and is conceptually similar to Addict—but offers more functionality:
 
+- RESTful HTTP API
 - API key authorization
-- LDAP3 Simplified Query Language
-- Schemas with mappings and validation
-- Server logging
+- Custom schemas
+- Simplified Query Language
+- Robust server logging
 - LDAP debugging
 - Production-ready Docker image
 - SwaggerUI
@@ -29,11 +33,6 @@ At a higher level, it currently provides:
 - Support for extended operations in Active Directory 
 
 The long-term goal is to provide helpers for common operations in other, also popular LDAP directory servers.
-
-
-Motivation
-------
-Adding LDAP support to an application can be a time-consuming and complex task; Lapdance remedies this by creating a layer of abstraction on top of the LDAP protocol. Also, as Lapdance runs in its own self-contained environment—it provides not only flexibility, but also customizability—leaving you in control!
 
 
 Documentation

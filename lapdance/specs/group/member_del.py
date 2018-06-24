@@ -3,7 +3,7 @@
 from lapdance.specs.group import ldap_operation_spec
 from lapdance.specs.group import tags
 from lapdance.specs.user import user_id_path
-from lapdance.specs.constants import GROUP_MEMBER_DEL
+from lapdance.specs.descriptions import GROUP_MEMBER_DEL
 from copy import deepcopy
 
 group_member_del = deepcopy(ldap_operation_spec)

@@ -4,7 +4,6 @@ schema = {
     'classes': {
         'required': True,
         'type': 'list',
-        'default': []
     },
     'relative_dn': {
         'required': False,
@@ -23,10 +22,11 @@ schema = {
     'fields': {
         'type': 'dict',
         'allow_unknown': True,
+        'required': True,
         'valueschema': {
             'type': 'dict',
             'schema': {
-                'ldap_name': {
+                'ref': {
                     'type': 'string',
                     'required': True
                 },
@@ -34,6 +34,9 @@ schema = {
                     'type': 'string',
                     'required': True
                 },
+                'default': {
+                    'required': False
+                }
             }
         },
         'schema': {

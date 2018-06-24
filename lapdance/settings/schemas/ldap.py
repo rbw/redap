@@ -19,6 +19,12 @@ schema = {
         'type': 'integer',
         'default': 3,
     },
+    'directory_type': {
+        'required': False,
+        'type': 'string',
+        'allowed': ['ad', 'freeipa', 'unknown'],
+        'default': 'unknown'
+    },
     'secret': {
         'required': True,
         'type': 'string',
@@ -26,8 +32,8 @@ schema = {
     'debug': {
         'required': False,
         'type': 'string',
-        'allowed': ['disabled', 'basic', 'network', 'extended'],
-        'default': 'disabled',
+        'allowed': ['off', 'basic', 'network', 'extended'],
+        'default': 'off'
     },
     'return_error_details': {
         'required': False,

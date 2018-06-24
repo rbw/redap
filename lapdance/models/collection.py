@@ -17,20 +17,14 @@ class LDAPCollection(ldap.Model):
     def __call__(self, *args, **kwargs):
         return self.model
 
-    def init_model(self, object_classes, base_dn, fields):
+    def init_model(self, **kwargs):
         """Takes various configuration parameters and generates an ldap.Entry and assigns to self.model.
 
-        :param object_classes: List of LDAP objectClasses (e.g. top, user, person)
-        :param base_dn: Base DN of this collection
-        :param fields: List of LDAP field mappings
+        :param kwargs: Model properties
         """
 
-        attributes = {k: ldap.Attribute(v['ldap_name']) for k, v in fields.items()}
-        attributes.update({
-            'base_dn': base_dn,
-            'entry_rdn': fields.get('name'),
-            'object_classes': object_classes,
-        })
+        attributes = {k: ldap.Attribute(v['ref']) for k, v in kwargs.pop('fields').items()}
+        attributes.update(**kwargs)
 
         # Create new instance of ldap.Entry using `type` and have it registered.
-        self.model = globals()[self.name] = type(self.name, (ldap.Entry,), attributes)
+        self.model = globals()[self.name] = type(self.name, (ldap.Entry, ), attributes)

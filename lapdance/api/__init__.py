@@ -10,6 +10,11 @@ from .users import bp as users_bp
 from .groups import bp as groups_bp
 
 
+def log_traceback(app, exception):
+    tb = traceback.format_tb(exception.__traceback__)
+    app.logger.debug(''.join(tb))
+
+
 def register_blueprints(app, blueprints):
     for bp in blueprints:
         app.register_blueprint(bp, url_prefix='/{0}/{1}'.format('api', bp.name))
@@ -37,9 +42,8 @@ def create_app(*args, **kwargs):
             status = 500
             errmsg = "LDAP error: {0}".format(error)
 
-        if app.config['ENV'] == 'devel' and app.config['DEBUG'] == True:
-            tb = traceback.format_tb(error.__traceback__)
-            app.logger.debug(''.join(tb))
+        if app.config['DEBUG']:
+            log_traceback(app, error)
 
         app.logger.error(errmsg)
 
@@ -50,9 +54,8 @@ def create_app(*args, **kwargs):
     def handle_invalid_usage(error):
         msg = "{0} (path: {1}, method: {2})".format(error.message, request.path, request.method)
 
-        if app.config['ENV'] == 'devel' and app.config['DEBUG'] is True:
-            tb = traceback.format_tb(error.__traceback__)
-            app.logger.debug(''.join(tb))
+        if app.config['DEBUG']:
+            log_traceback(app, error)
 
         if str(error.status_code)[0] == '4':  # Log info on HTTP 4xx
             app.logger.info(msg)
