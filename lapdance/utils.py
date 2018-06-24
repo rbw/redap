@@ -22,7 +22,7 @@ def generate_apikey_table(api_keys):
 
 def generate_spec_def(schema_name, config):
     fields = {
-        'required': [],
+        'required': config['required_fields'],
         'properties': {}
     }
 
@@ -31,12 +31,7 @@ def generate_spec_def(schema_name, config):
             'type': field['type'],
         }
 
-        if field.get('required'):
-            fields['required'].append(name)
-
-    return {
-        schema_name: fields
-    }
+    return {schema_name: fields}
 
 
 def props_to_str(entry, **kwargs):
