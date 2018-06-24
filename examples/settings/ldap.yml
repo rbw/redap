@@ -1,6 +1,6 @@
 # Connection settings
 uri: ldaps://ipa.demo1.freeipa.org:636
-base_dn: cn=compat,dc=demo1,dc=freeipa,dc=org
+base_dn: dc=demo1,dc=freeipa,dc=org
 conn_timeout: 5  # Give up after this many seconds
 
 # Authentication
