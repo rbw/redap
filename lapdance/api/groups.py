@@ -54,5 +54,5 @@ def remove_member(group_id, user_id):
 @route(bp, '/<group_id>', method='PUT', spec=group_update)
 def update(group_id, _payload):
     groups.update(group_id, _payload)
-    return 'Group {0} updated'.format(_payload['id'])
+    return 'Group {0} updated'.format(group_id)
 
