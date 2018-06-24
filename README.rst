@@ -33,7 +33,16 @@ At a higher level, it currently provides:
 - Solid CRUD support for LDAP-conformant directory servers
 - Support for extended operations in Active Directory 
 
-The long-term goal is to provide helpers for common operations in other, also popular LDAP directory servers.
+The long-term goal is to provide helpers for common operations in other, also popular directory servers.
+
+Quick demo?
+--------
+If you have **docker-compose** installed, run the following one-liner to *download, install, configure* and *start* the full server stack (with a connection ready to demo1.freeipa.org) in ~30 seconds.
+
+.. code-block::
+
+  $ wget -q -O- https://raw.githubusercontent.com/rbw0/lapdance/master/examples/docker-compose.yml | docker-compose -f - up
+
 
 
 Getting started
