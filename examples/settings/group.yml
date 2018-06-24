@@ -1,8 +1,8 @@
-# This container configuration is populated based on `directory_type` in ldap.yaml, but can be overridden if you want.
-# Not specifying a `directory_type` requires you to populate this configuration manually.
+# Here you may define or--if using a non-custom type--override, any parts of the schema
 #
-# Please see https://github.com/rbw0/lapdance/wiki/User-and-Group-containers for more info
+# Check out the wiki for more info:
+# https://github.com/rbw0/lapdance/wiki/Working-with-schemas
 
 {
-  relative_dn: cn=groups,cn=accounts
+  relative_dn: 'cn=groups,cn=accounts'
 }

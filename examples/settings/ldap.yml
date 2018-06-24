@@ -9,7 +9,7 @@ secret: Secret123
 
 # Directory server type
 # ---------------------
-# Currently, one of: ['ad', 'freeipa', 'custom']
+# Currently supports one of: ['ad', 'freeipa', 'custom']
 #
 # While not required, setting a `directory_type` can be useful as it:
 # 1) Enables directory-specific functionality
@@ -20,7 +20,7 @@ secret: Secret123
 #
 # Check out the wiki for more info.
 # https://github.com/rbw0/lapdance/wiki/Working-with-schemas
-directory_type: ad
+directory_type: freeipa
 
 # Return details about LDAP errors to the client
 return_error_details: true
