@@ -15,10 +15,6 @@ defaults_ad = {
         'fields': {
             'id': {
                 'type': 'string',
-                'ref': 'sAMAccountName'
-            },
-            'name': {
-                'type': 'string',
                 'ref': 'cn'
             },
             'created_at': {
@@ -44,7 +40,7 @@ defaults_ad = {
             'top',
             'person',
             'organizationalPerson',
-            'user'
+            'user',
         ],
         'hidden_fields': [
             'distinguished_name'
