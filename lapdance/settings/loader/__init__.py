@@ -6,10 +6,10 @@ from .utils import load_doc
 from .profiles import defaults
 
 
-LDAP_SETTINGS_FILE = 'settings/ldap.yaml'
-CORE_SETTINGS_FILE = 'settings/core.yaml'
-USER_SETTINGS_DOC = 'settings/user.yaml'
-GROUP_SETTINGS_FILE = 'settings/group.yaml'
+LDAP_SETTINGS_FILE = 'settings/ldap.yml'
+CORE_SETTINGS_FILE = 'settings/core.yml'
+USER_SETTINGS_DOC = 'settings/user.yml'
+GROUP_SETTINGS_FILE = 'settings/group.yml'
 
 ldap_settings = load_doc(LDAP_SETTINGS_FILE, ldap_schema)
 dir_defaults = defaults[ldap_settings['directory_type']]
