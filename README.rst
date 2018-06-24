@@ -28,20 +28,18 @@ It's partly inspired by, and is conceptually similar to Addict—but offers more
 - Production-ready Docker image
 - SwaggerUI
 
-At a higher level, it currently provides:
-
-- Solid CRUD support for LDAP-conformant directory servers
-- Support for extended operations in Active Directory 
-
-The long-term goal is to provide helpers for common operations in other, also popular directory servers.
-
 Quick demo?
 --------
-If you have **docker-compose** installed, run the following one-liner to *download, install, configure* and *start* the full server stack (with a connection ready to demo1.freeipa.org) in ~30 seconds.
+If you have **docker-compose** installed—run the following commands to *download, install, configure* and *start* the full server stack (with a connection ready to demo1.freeipa.org) and *generate an API* in 30 secs or so.
 
 .. code-block::
 
-  $ wget -q -O- https://raw.githubusercontent.com/rbw0/lapdance/master/examples/docker-compose.yml | docker-compose -f - up
+  $ sudo wget -q -O- https://git.io/f4SVj | docker-compose -f - up -d
+  $ ~/.lapdance/scripts/keys.sh add "My first API key"
+
+
+- Now point a browser to *http://127.0.0.1:5000/api-docs* , click **Authorize** and provide the generated API key.
+
 
 
 
@@ -62,6 +60,15 @@ Needless to say: create an Issue if you've found a bug, or a PR if you have a co
 - nginx ssl
 - pagination
 - more directory types
+
+
+At a high level, Lapdance currently provides:
+
+- Solid CRUD support for LDAP-conformant directory servers
+- Support for extended operations in Active Directory 
+
+The long-term goal is to provide helpers for common operations in other, also popular directory servers.
+
 
 
 Author
