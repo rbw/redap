@@ -10,7 +10,7 @@
 
 Adding LDAP support to an application can be a time-consuming, tedious and complex task.
 
-Lapdance creates an abstraction layer on top of LDAP, in its own little habitat—or micro-service if you want—making everything great again.
+Lapdance creates an abstraction layer on top of LDAP, in its own little habitat—or micro-service if you want—making *everything great again!*.
 
 Description
 ------
