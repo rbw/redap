@@ -18,10 +18,11 @@ Adding LDAP support to an application can be a time-consuming, tedious and compl
 Redap adds an abstraction layer on top of LDAP, in its own little habitat—or micro-service, if you will—providing flexibility, customizability and simplicity.
 
 
-Description
+Features
 ------
 
-Redap is partly inspired by, and is conceptually similar to Addict, but offers more functionality:
+Redap was partly inspired by and is conceptually similar to `dthree/addict <https://github.com/dthree/addict>`_, but offers more features:
+
 
 - RESTful HTTP API
 - API key authorization
@@ -44,7 +45,7 @@ If you have **docker-compose** installed—run the following commands to *downlo
 
 .. code-block::
 
-  $ sudo wget -q -O- https://git.io/f45Px | docker-compose -f - up -d
+  $ wget -q -O- https://git.io/f45Px | sudo docker-compose -f - up -d
   $ ~/.redap/scripts/keys.sh add "My first API key"
 
 
