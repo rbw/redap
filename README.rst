@@ -44,7 +44,7 @@ If you have **docker-compose** installed—run the following commands to *downlo
 
 .. code-block::
 
-  $ sudo wget -q -O- https://git.io/f4SVj | docker-compose -f - up -d
+  $ sudo wget -q -O- https://git.io/f45Px | docker-compose -f - up -d
   $ ~/.redap/scripts/keys.sh add "My first API key"
 
 
