@@ -1,11 +1,11 @@
 version: '2'
 services:
-  lapdance:
-    image: rbw0/lapdance:latest
+  redap:
+    image: rbw0/redap:latest
     volumes:
-      - '~/.lapdance/settings:/app/settings'
-      - '~/.lapdance/db:/app/.db'
-      - '~/.lapdance/logs:/app/logs'
-      - '~/.lapdance/scripts:/scripts'
+      - '~/.redap/settings:/app/settings'
+      - '~/.redap/db:/app/.db'
+      - '~/.redap/logs:/app/logs'
+      - '~/.redap/scripts:/scripts'
     ports:
       - '5000:80'
