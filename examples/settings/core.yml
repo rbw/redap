@@ -2,4 +2,4 @@
 auth_type: api_key
 
 # SQLAlchemy connection string
-database_uri: 'sqlite+pysqlite:///.db/lapdance.db'
+database_uri: 'sqlite+pysqlite:///.db/redap.db'

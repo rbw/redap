@@ -19,7 +19,7 @@ secret: Secret123
 # `classes` and `fields` in the User and Group schemas.
 #
 # Check out the wiki for more info.
-# https://github.com/rbw0/lapdance/wiki/Working-with-schemas
+# https://github.com/rbw0/redap/wiki/Working-with-schemas
 directory_type: freeipa
 
 # Return details about LDAP errors to the client
