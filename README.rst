@@ -5,19 +5,23 @@
       / ___/ _ \/ __  / __ `/ __ \
      / /  /  __/ /_/ / /_/ / /_/ /
     /_/   \___/\__,_/\__,_/ .___/
-       RESTful HTTP/LDAP /_/ GW
+       HTTP/LDAP Gateway /_/
 
 
+Powered by Flask—robust and customizable enough for production use—simple enough for grandma to operate.
+
+
+Motivation
+-------
 Adding LDAP support to an application can be a time-consuming, tedious and complex task.
 
-Redap creates an abstraction layer on top of LDAP, in its own little habitat—or micro-service, if you will.
+Redap adds an abstraction layer on top of LDAP, in its own little habitat—or micro-service, if you will.
 
 
 Description
 ------
-Powered by Flask—robust and customizable enough for production use—simple enough for grandma to operate.
 
-It's partly inspired by, and is conceptually similar to Addict—but offers more functionality:
+Redap is partly inspired by, and is conceptually similar to Addict—but offers more functionality:
 
 - RESTful HTTP API
 - API key authorization
