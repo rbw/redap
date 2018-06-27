@@ -15,13 +15,13 @@ Motivation
 -------
 Adding LDAP support to an application can be a time-consuming, tedious and complex task.
 
-Redap adds an abstraction layer on top of LDAP, in its own little habitat—or micro-service, if you will.
+Redap adds an abstraction layer on top of LDAP, in its own little habitat—or micro-service, if you will—providing flexibility, customizability and simplicity.
 
 
 Description
 ------
 
-Redap is partly inspired by, and is conceptually similar to Addict—but offers more functionality:
+Redap is partly inspired by, and is conceptually similar to Addict, but offers more functionality:
 
 - RESTful HTTP API
 - API key authorization
