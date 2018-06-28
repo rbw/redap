@@ -28,6 +28,7 @@ Redap was partly inspired by and is conceptually similar to `dthree/addict <http
 - API key authorization
 - Custom schemas
 - Simplified Query Language
+- Secure Sockets Layer (SSL)
 - LDAP debugging
 - Robust application stack
 - Production-ready Docker image
@@ -72,7 +73,6 @@ Needless to say: create an Issue if you've found a bug, or a PR if you have a co
 **Being worked on**
 
 - tests
-- nginx ssl
 - pagination
 - more directory types
 
