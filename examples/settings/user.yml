@@ -3,6 +3,4 @@
 # Check out the wiki for more info:
 # https://github.com/rbw0/redap/wiki/Working-with-schemas
 
-{
-  relative_dn: 'cn=users,cn=accounts'
-}
+relative_dn: 'cn=users,cn=accounts'
