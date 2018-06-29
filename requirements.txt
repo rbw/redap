@@ -1,3 +1,5 @@
+sqlalchemy>=1.2.7
+click>=6.7
 ldap3>=2.5
 pyyaml>=3.12
 furl>=1.1
