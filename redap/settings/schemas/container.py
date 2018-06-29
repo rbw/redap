@@ -6,7 +6,7 @@ schema = {
         'type': 'list',
     },
     'relative_dn': {
-        'required': False,
+        'required': True,
         'type': 'string'
     },
     'hidden_fields': {
