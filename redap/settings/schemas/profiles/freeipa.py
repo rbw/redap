@@ -18,7 +18,7 @@ defaults_freeipa = {
         ],
         'fields': {
             'id': {
-                'type': 'id',
+                'type': 'string',
                 'ref': 'cn'
             },
             'gid_number': {
@@ -50,7 +50,7 @@ defaults_freeipa = {
         ],
         'fields': {
             'id': {
-                'type': 'id',
+                'type': 'string',
                 'ref': 'uid',
             },
             'uid_number': {

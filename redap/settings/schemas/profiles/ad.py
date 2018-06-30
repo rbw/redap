@@ -14,7 +14,7 @@ defaults_ad = {
         ],
         'fields': {
             'id': {
-                'type': 'id',
+                'type': 'string',
                 'ref': 'cn'
             },
             'created_at': {
@@ -50,7 +50,7 @@ defaults_ad = {
         ],
         'fields': {
             'id': {
-                'type': 'id',
+                'type': 'string',
                 'ref': 'sAMAccountName'
             },
             'name': {

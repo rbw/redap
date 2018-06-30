@@ -43,7 +43,7 @@ class Service(object):
 
     @property
     def id_ref(self):
-        return self.__config__['id']['ref']
+        return self.fields['id']['ref']
 
     @property
     def fields(self):
