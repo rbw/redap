@@ -34,7 +34,7 @@ def create_app(package_name, *args, **kwargs):
     LDAPUser.init_model(
         object_classes=user_schema['classes'],
         base_dn=base_dn,
-        entry_rdn=[user_fields['id']['ref']],
+        entry_rdn=user_fields['id']['ref'],
         fields=user_fields
     )
 
