@@ -2,7 +2,7 @@
 
 from ldap3 import MODIFY_REPLACE, MODIFY_ADD
 from ldap3.core.exceptions import LDAPOperationResult
-from redap.models import LDAPUser
+from redap.settings import user_schema
 from redap.core import ldap
 from redap.exceptions import RedapError
 from .base import Service, ACTIVE_DIRECTORY
@@ -14,8 +14,8 @@ UAC_DISABLE = 514
 
 
 class UserService(Service):
-    __model__ = LDAPUser
-    __config_name__ = 'REDAP_LDAP_USER'
+    __model__ = user_schema.ldap_model
+    __config__ = user_schema.data
 
     def _set_account_control(self, user_id, flag):
         self._raise_if_incompatible_with(ACTIVE_DIRECTORY)
@@ -24,8 +24,7 @@ class UserService(Service):
                          changes=payload)
 
     def is_member_of(self, user_dn, group_dn):
-        id_attr = self.config['fields']['id']['ref']
-        return len(self.get_many(filter='({0}={1})(memberOf={2})'.format(id_attr, user_dn, group_dn))) > 0
+        return len(self.get_many(filter='({0}={1})(memberOf={2})'.format(self.id_ref, user_dn, group_dn))) > 0
 
     @property
     def _groups(self):

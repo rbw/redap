@@ -14,9 +14,9 @@ REPLACE = MODIFY_REPLACE
 
 
 class ResponseHandler(object):
-    def __init__(self, response, config, raise_on_empty=False):
+    def __init__(self, response, hidden_fields, raise_on_empty=False):
         self.entries = response.all()
-        self.config = config
+        self.hidden_fields = hidden_fields
         self.count = len(self.entries)
 
         if self.count == 0 and raise_on_empty:
@@ -24,34 +24,38 @@ class ResponseHandler(object):
 
     def result(self, as_dict=False):
         if as_dict:
-            return [props_to_str(e, skip_fields=self.config['hidden_fields']) for e in self.entries]
+            return [props_to_str(e, skip_fields=self.hidden_fields) for e in self.entries]
 
         return self.entries
 
 
 class Service(object):
     __model__ = None
-    __config_name__ = None
+    __config__ = {}
 
     @property
     def conn(self):
         return ldap.connection
 
     @property
-    def is_secure(self):
-        return self.config['LDAP_USE_SSL']
+    def relative_dn(self):
+        return self.__config__['relative_dn']
 
     @property
-    def model(self):
-        return self.__model__()
-
-    @property
-    def config(self):
-        return app.config[self.__config_name__]
+    def id_ref(self):
+        return self.__config__['id']['ref']
 
     @property
     def fields(self):
-        return self.config['fields']
+        return self.__config__['fields']
+
+    @property
+    def hidden_fields(self):
+        return self.__config__['hidden_fields']
+
+    @property
+    def classes(self):
+        return self.__config__['classes']
 
     @property
     def dirtype(self):
@@ -68,8 +72,8 @@ class Service(object):
 
     def _get_matching(self, query_filter=None, raise_on_empty=False):
         return ResponseHandler(
-            self.model.query.filter(query_filter),
-            self.config,
+            self.__model__.query.filter(query_filter),
+            self.hidden_fields,
             raise_on_empty=raise_on_empty
         )
 
@@ -84,9 +88,9 @@ class Service(object):
 
             rdn = 'cn={0}'.format(params[cn_key])
         else:
-            rdn = '{0}={1}'.format(self.fields['id']['ref'], id_value)
+            rdn = '{0}={1}'.format(self.id_ref, id_value)
 
-        return '{0},{1},{2}'.format(rdn, self.config['relative_dn'], self.model.base_dn)
+        return '{0},{1},{2}'.format(rdn, self.relative_dn, self.__model__.base_dn)
 
     def _create_payload(self, params, operation):
         payload = {}
@@ -115,7 +119,7 @@ class Service(object):
 
     def _add(self, params):
         self.conn.add(dn=self._get_entry_dn(params['id'], params),
-                      object_class=self.config['classes'],
+                      object_class=self.classes,
                       attributes=self._create_payload(params, ADD))
 
     def get_many(self, as_dict=True, **kwargs):
@@ -125,9 +129,8 @@ class Service(object):
         ).result(as_dict=as_dict) or []
 
     def get_one(self, id_value, as_dict=False):
-        id_field = self.config['fields']['id']
         return self._get_matching(
-            query_filter='({0}={1})'.format(id_field['ref'], id_value),
+            query_filter='({0}={1})'.format(self.id_ref, id_value),
             raise_on_empty=True,
         ).result(as_dict=as_dict)[0]
 
