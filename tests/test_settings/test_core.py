@@ -14,13 +14,17 @@ CONFIG_BASE = {
 }
 
 
+def get_core(data, **kwargs):
+    return CoreLoader(data=data, **kwargs).data
+
+
 class SettingsLoaderCase(TestCase):
     """Invalid auth_type should raise InvalidConfiguration"""
     def test_auth_type_enum(self):
         c = copy(CONFIG_BASE)
-        c['auth_type'] = 'Invalid'
+        c['auth_type'] = 'FOO'
 
-        self.assertRaises(InvalidConfiguration, CoreLoader, data=c)
+        self.assertRaises(InvalidConfiguration, get_core, c)
 
     """No auth_type should set default"""
     def test_auth_type_default(self):

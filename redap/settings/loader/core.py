@@ -5,5 +5,5 @@ from redap.settings.schemas import core_schema
 
 
 class CoreLoader(Loader):
-    def __init__(self, *args, **kwargs):
-        super(CoreLoader, self).__init__(*args, schema=core_schema, **kwargs)
+    def __init__(self, file_name='core.yml', **kwargs):
+        super(CoreLoader, self).__init__(file_name, schema=core_schema, **kwargs)
