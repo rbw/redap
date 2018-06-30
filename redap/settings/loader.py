@@ -12,18 +12,18 @@ from .schemas import default_profiles, container_schema, core_schema, ldap_schem
 
 
 class Loader(object):
-    def __init__(self, file, **kwargs):
+    def __init__(self, file_name, **kwargs):
         self.dirtype = kwargs.pop('dirtype', None)
         self.schema = kwargs.pop('schema', None)
 
         directory = kwargs.pop('directory', os.environ.get('REDAP_SETTINGS_DIR', 'settings'))
-        self.file = file
-        self.file_path = '{0}/{1}'.format(directory, file)
+        file_path = '{0}/{1}'.format(directory, file_name)
 
-        self.data = self._open(self.file_path)
+        self.file_name = file_name
+        self.data = kwargs.pop('data', self._open(file_path))
 
-        if self.dirtype and default_profiles[self.dirtype].get(self.file):
-            self._apply_profile(default_profiles[self.dirtype][self.file])
+        if self.dirtype and default_profiles[self.dirtype].get(self.file_name):
+            self._apply_profile(default_profiles[self.dirtype][self.file_name])
 
         if self.schema:
             self.data = self._validate(self.data, self.schema)
@@ -49,7 +49,7 @@ class Loader(object):
         v.allow_unknown = True
         v.validate(data, schema)
         if v.errors:
-            raise InvalidConfiguration(self.file_path, json.dumps(v.errors, indent=4, separators=(',', ': ')))
+            raise InvalidConfiguration(self.file_name, json.dumps(v.errors, indent=4, separators=(',', ': ')))
 
         return v.__dict__['document']
 
