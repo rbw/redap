@@ -45,7 +45,7 @@ def create_app(package_name, *args, **kwargs):
         fields=group_fields,
     )
 
-    if app.config['ENV'] != 'devel':
+    if app.config['ENV'] == 'production':
         formatter = logging.Formatter(app.config['LOG_FORMAT'])
 
         handler = RotatingFileHandler('logs/application.log', maxBytes=10000, backupCount=3)

@@ -2,22 +2,17 @@
 
 from urllib.parse import urlparse
 from redap.settings.schemas import container_schema, core_schema, ldap_schema
+from redap.settings.schemas.profiles import defaults
 from .utils import load_doc
-from .profiles import defaults
 
 
-LDAP_SETTINGS_FILE = 'settings/ldap.yml'
-CORE_SETTINGS_FILE = 'settings/core.yml'
-USER_SETTINGS_DOC = 'settings/user.yml'
-GROUP_SETTINGS_FILE = 'settings/group.yml'
-
-ldap_settings = load_doc(LDAP_SETTINGS_FILE, ldap_schema)
+ldap_settings = load_doc('ldap.yml', ldap_schema)
 dir_defaults = defaults[ldap_settings['directory_type']]
 
 files_schemas = [
-    (CORE_SETTINGS_FILE, core_schema, None),
-    (USER_SETTINGS_DOC, container_schema, dir_defaults['user']),
-    (GROUP_SETTINGS_FILE, container_schema, dir_defaults['group']),
+    ('core.yml', core_schema, None),
+    ('user.yml', container_schema, dir_defaults['user']),
+    ('group.yml', container_schema, dir_defaults['group']),
 ]
 
 # Create and validate configuration objects from YAML

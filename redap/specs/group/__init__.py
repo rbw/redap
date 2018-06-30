@@ -2,7 +2,7 @@
 
 from functools import partial
 
-from redap.settings import REDAP_LDAP_GROUP
+from redap.settings import UserSchema
 from redap.utils import generate_spec_def
 from redap.specs.definitions import (
     op_success, op_success_def,
@@ -28,7 +28,7 @@ group_body = {
     },
 }
 
-get_group_def = partial(generate_spec_def, 'Group', REDAP_LDAP_GROUP)
+get_group_def = partial(generate_spec_def, 'Group', UserSchema().__dict__)
 
 
 ldap_operation_spec = {

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import yaml
 import json
 from cerberus import Validator
@@ -7,7 +8,8 @@ from redap.exceptions import InvalidConfiguration
 
 
 def load_doc(file, schema=None, defaults=None):
-    with open(file, 'r') as stream:
+    directory = os.environ.get('REDAP_SETTINGS_DIR', 'settings')
+    with open('{0}/{1}'.format(directory, file), 'r') as stream:
         try:
             doc = yaml.load(stream) or {}
 
