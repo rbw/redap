@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 defaults_freeipa = {
-    'group.yml': {
+    'group': {
         'classes': [
             'top',
             'groupofnames',
@@ -32,7 +32,7 @@ defaults_freeipa = {
             },
         }
     },
-    'user.yml': {
+    'user': {
         'classes': [
             'top',
             'inetorgperson',

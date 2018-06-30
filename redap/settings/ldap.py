@@ -2,14 +2,12 @@
 
 import ssl
 from ldap3.utils.log import set_library_log_detail_level, OFF, BASIC, NETWORK, EXTENDED
-from . import ldap, user_schema, group_schema
+from . import ldap
 
 ldap_settings = ldap.data
 
 REDAP_BASE_DN = ldap_settings['base_dn']
 REDAP_LDAP_DIRTYPE = ldap_settings['directory_type']
-REDAP_LDAP_USER = user_schema.data
-REDAP_LDAP_GROUP = group_schema.data
 
 # Return LDAP error details to client
 REDAP_SHOW_LDAP_ERROR_DETAILS = ldap_settings['return_error_details']

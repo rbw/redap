@@ -1,9 +1,12 @@
-from .loader import UserLoader, GroupLoader, CoreLoader, LDAPLoader
+# -*- coding: utf-8 -*-
 
-ldap = LDAPLoader()
-core = CoreLoader()
+from .schemas import default_profiles, container_schema, core_schema, ldap_schema
+from .loader import SchemaLoader, CoreLoader, LDAPLoader
 
-_dirtype = ldap.data['directory_type']
 
-user_schema = UserLoader(dirtype=_dirtype)
-group_schema = GroupLoader(dirtype=_dirtype)
+ldap = LDAPLoader('ldap.yml')
+core = CoreLoader('core.yml')
+
+user_schema = SchemaLoader('user.yml', ldap.base_dn, ldap.dirtype)
+group_schema = SchemaLoader('group.yml', ldap.base_dn, ldap.dirtype)
+

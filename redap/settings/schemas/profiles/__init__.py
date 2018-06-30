@@ -8,8 +8,8 @@ defaults = {
     'freeipa': defaults_freeipa,
     'ad': defaults_ad,
     'unknown': {
-        'user.yml': {},
-        'group.yml': {}
+        'user': {},
+        'group': {}
     }
 }
 

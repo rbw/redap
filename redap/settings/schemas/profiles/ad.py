@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 defaults_ad = {
-    'group.yml': {
+    'group': {
         'classes': [
             'top',
             'group',
@@ -35,7 +35,7 @@ defaults_ad = {
             },
         }
     },
-    'user.yml': {
+    'user': {
         'classes': [
             'top',
             'person',

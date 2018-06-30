@@ -5,7 +5,6 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask
 from flask.logging import default_handler
 from redap.core import ldap, db, migrate
-from redap.models import LDAPUser, LDAPGroup
 
 
 def create_app(package_name, *args, **kwargs):
@@ -21,30 +20,6 @@ def create_app(package_name, *args, **kwargs):
     # Init SQLAlchemy
     db.init_app(app)
     migrate.init_app(app, db)
-
-    # LDAP config
-    base_dn = app.config.get('REDAP_BASE_DN')
-    user_schema = app.config['REDAP_LDAP_USER']
-    group_schema = app.config['REDAP_LDAP_GROUP']
-
-    user_fields = user_schema['fields']
-    group_fields = group_schema['fields']
-
-    # Init LDAP user model
-    LDAPUser.init_model(
-        object_classes=user_schema['classes'],
-        base_dn=base_dn,
-        entry_rdn=user_fields['id']['ref'],
-        fields=user_fields
-    )
-
-    # Init LDAP group model
-    LDAPGroup.init_model(
-        object_classes=group_schema['classes'],
-        base_dn=base_dn,
-        entry_rdn=group_fields['id']['ref'],
-        fields=group_fields,
-    )
 
     if app.config['ENV'] == 'production':
         formatter = logging.Formatter(app.config['LOG_FORMAT'])

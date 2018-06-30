@@ -2,12 +2,12 @@
 
 from .base import Service, ACTIVE_DIRECTORY
 from redap.exceptions import RedapError
-from redap.models import LDAPGroup
+from redap.settings import group_schema
 
 
 class GroupService(Service):
-    __model__ = LDAPGroup
-    __config_name__ = 'REDAP_LDAP_GROUP'
+    __model__ = group_schema.ldap_model
+    __config__ = group_schema.data
 
     @property
     def _users(self):
