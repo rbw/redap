@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 defaults_ad = {
-    'group.yml': {
+    'group': {
         'classes': [
             'top',
             'group',
@@ -14,7 +14,7 @@ defaults_ad = {
         ],
         'fields': {
             'id': {
-                'type': 'string',
+                'type': 'id',
                 'ref': 'cn'
             },
             'created_at': {
@@ -35,7 +35,7 @@ defaults_ad = {
             },
         }
     },
-    'user.yml': {
+    'user': {
         'classes': [
             'top',
             'person',
@@ -50,7 +50,7 @@ defaults_ad = {
         ],
         'fields': {
             'id': {
-                'type': 'string',
+                'type': 'id',
                 'ref': 'sAMAccountName'
             },
             'name': {

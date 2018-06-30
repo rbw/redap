@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 defaults_freeipa = {
-    'group.yml': {
+    'group': {
         'classes': [
             'top',
             'groupofnames',
@@ -18,7 +18,7 @@ defaults_freeipa = {
         ],
         'fields': {
             'id': {
-                'type': 'string',
+                'type': 'id',
                 'ref': 'cn'
             },
             'gid_number': {
@@ -32,7 +32,7 @@ defaults_freeipa = {
             },
         }
     },
-    'user.yml': {
+    'user': {
         'classes': [
             'top',
             'inetorgperson',
@@ -50,7 +50,7 @@ defaults_freeipa = {
         ],
         'fields': {
             'id': {
-                'type': 'string',
+                'type': 'id',
                 'ref': 'uid',
             },
             'uid_number': {
