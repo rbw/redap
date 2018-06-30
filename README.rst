@@ -24,11 +24,10 @@ Features
 Redap was partly inspired by and is conceptually similar to `dthree/addict <https://github.com/dthree/addict>`_, but offers more features:
 
 
-- RESTful HTTP API
+- RESTful HTTP(S) API
 - API key authorization
 - Custom schemas
 - Simplified Query Language
-- Secure Sockets Layer (SSL)
 - LDAP debugging
 - Robust application stack
 - Production-ready Docker image

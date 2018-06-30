@@ -2,7 +2,7 @@
 
 from functools import partial
 
-from redap.settings import REDAP_LDAP_USER
+from redap.settings import user_schema
 from redap.utils import generate_spec_def
 from redap.specs.definitions import (
     op_success, op_success_def,
@@ -28,7 +28,7 @@ user_body = {
     },
 }
 
-get_user_def = partial(generate_spec_def, 'User', REDAP_LDAP_USER)
+get_user_def = partial(generate_spec_def, 'User', user_schema.data)
 
 ldap_operation_spec = {
     'tags': tags,

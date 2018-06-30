@@ -1,0 +1,26 @@
+# Connection settings
+uri: ldaps://ipa.demo1.freeipa.org:636
+base_dn: dc=demo1,dc=freeipa,dc=org
+conn_timeout: 5  # Give up after this many seconds
+
+# Authentication
+bind_dn: uid=admin,cn=users,cn=accounts,dc=demo1,dc=freeipa,dc=org
+secret: Secret123
+
+# Directory server type
+# ---------------------
+# Currently supports one of: ['ad', 'freeipa', 'custom']
+#
+# While not required, setting a `directory_type` can be useful as it:
+# 1) Enables directory-specific functionality
+# 2) Configures User and Group overridable schema defaults (object classes, field mappings etc)
+#
+# Not specifying a directory type defaults to 'custom', requiring you to define at least -
+# `classes` and `fields` in the User and Group schemas.
+#
+# Check out the wiki for more info.
+# https://github.com/rbw0/redap/wiki/Working-with-schemas
+directory_type: freeipa
+
+# Return details about LDAP errors to the client
+return_error_details: true

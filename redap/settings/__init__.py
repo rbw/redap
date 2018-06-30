@@ -1,4 +1,9 @@
-# -*- coding: utf-8 -*-
+from .loader import UserLoader, GroupLoader, CoreLoader, LDAPLoader
 
-from .core import *
-from .ldap import *
+ldap = LDAPLoader()
+core = CoreLoader()
+
+_dirtype = ldap.data['directory_type']
+
+user_schema = UserLoader(dirtype=_dirtype)
+group_schema = GroupLoader(dirtype=_dirtype)

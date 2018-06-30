@@ -22,8 +22,8 @@ schema = {
     'directory_type': {
         'required': False,
         'type': 'string',
-        'allowed': ['ad', 'freeipa', 'unknown'],
-        'default': 'unknown'
+        'allowed': ['ad', 'freeipa', 'custom'],
+        'default': 'custom'
     },
     'secret': {
         'required': True,
