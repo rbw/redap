@@ -12,7 +12,8 @@ def create_app(package_name, *args, **kwargs):
     app = Flask(package_name, *args, instance_relative_config=True, **kwargs)
 
     # Fetch settings from config file
-    app.config.from_object('redap.settings')
+    app.config.from_object('redap.settings.core')
+    app.config.from_object('redap.settings.ldap')
 
     # Init flask-ldapconn extension
     ldap.init_app(app)
@@ -23,15 +24,15 @@ def create_app(package_name, *args, **kwargs):
 
     # LDAP config
     base_dn = app.config.get('REDAP_BASE_DN')
-    user_config = app.config['REDAP_LDAP_USER']
-    group_config = app.config['REDAP_LDAP_GROUP']
+    user_schema = app.config['REDAP_LDAP_USER']
+    group_schema = app.config['REDAP_LDAP_GROUP']
 
-    user_fields = user_config['fields']
-    group_fields = group_config['fields']
+    user_fields = user_schema['fields']
+    group_fields = group_schema['fields']
 
     # Init LDAP user model
     LDAPUser.init_model(
-        object_classes=user_config['classes'],
+        object_classes=user_schema['classes'],
         base_dn=base_dn,
         entry_rdn=[user_fields['id']['ref']],
         fields=user_fields
@@ -39,7 +40,7 @@ def create_app(package_name, *args, **kwargs):
 
     # Init LDAP group model
     LDAPGroup.init_model(
-        object_classes=group_config['classes'],
+        object_classes=group_schema['classes'],
         base_dn=base_dn,
         entry_rdn=group_fields['id']['ref'],
         fields=group_fields,
