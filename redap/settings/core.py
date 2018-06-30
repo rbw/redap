@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from .loader import core_settings
+from . import core
+
+core_settings = core.data
 
 LOG_FORMAT = '%(asctime)s [%(process)d] [%(levelname)s] %(message)s'
 AUTH_TYPE = core_settings['auth_type']
