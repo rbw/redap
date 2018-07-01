@@ -4,7 +4,6 @@ from flask import current_app as app
 from ldap3 import MODIFY_REPLACE
 from redap.core import ldap
 from redap.exceptions import RedapError
-from redap.utils import props_to_str
 
 ACTIVE_DIRECTORY = 'ad'
 FREEIPA = 'freeipa'
@@ -22,9 +21,27 @@ class ResponseHandler(object):
         if self.count == 0 and raise_on_empty:
             raise RedapError(message='No such object', status_code=404)
 
+    def props_to_str(self, entry):
+        """Converts value array to string if count <= 1, skips hidden fields"""
+
+        formatted = {}
+
+        for field_name, value in entry.get_attributes_dict().items():
+            if field_name in self.hidden_fields:
+                continue
+
+            if len(value) == 1:
+                formatted[field_name] = value[0]
+            elif len(value) < 1:
+                formatted[field_name] = None
+            else:
+                formatted[field_name] = value
+
+        return formatted
+
     def result(self, as_dict=False):
         if as_dict:
-            return [props_to_str(e, skip_fields=self.hidden_fields) for e in self.entries]
+            return [self.props_to_str(e) for e in self.entries]
 
         return self.entries
 
