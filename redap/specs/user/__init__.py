@@ -3,7 +3,7 @@
 from functools import partial
 
 from redap.settings import user_schema
-from redap.utils import generate_spec_def
+from redap.specs.utils import generate_spec_def
 from redap.specs.definitions import (
     op_success, op_success_def,
     op_ldap_error, op_ldap_error_def,
