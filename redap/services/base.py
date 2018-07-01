@@ -87,11 +87,11 @@ class Service(object):
         if dirtype != self.dirtype:
             raise RedapError(message='Operation not compatible with this directory server', status_code=500)
 
-    def _get_matching(self, query_filter=None, raise_on_empty=False):
+    def _get_matching(self, query_filter=None, **kwargs):
         return ResponseHandler(
             self.__model__.query.filter(query_filter),
             self.hidden_fields,
-            raise_on_empty=raise_on_empty
+            **kwargs
         )
 
     def get_field_by_ref(self, ref_name):
@@ -139,17 +139,17 @@ class Service(object):
                       object_class=self.classes,
                       attributes=self._create_payload(params, ADD))
 
-    def get_many(self, as_dict=True, **kwargs):
+    def get_many(self, **kwargs):
         return self._get_matching(
             query_filter=kwargs.pop('filter', ''),
-            **kwargs,
-        ).result(as_dict=as_dict) or []
+            raise_on_empty=kwargs.pop('raise_on_empty', False)
+        ).result(**kwargs) or []
 
-    def get_one(self, id_value, as_dict=False):
+    def get_one(self, id_value, **kwargs):
         return self._get_matching(
             query_filter='({0}={1})'.format(self.id_ref, id_value),
-            raise_on_empty=True,
-        ).result(as_dict=as_dict)[0]
+            raise_on_empty=kwargs.pop('raise_on_empty', True),
+        ).result(**kwargs)[0]
 
     def update(self, id_value, params):
         self._modify(id_value, params)
