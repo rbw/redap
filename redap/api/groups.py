@@ -3,7 +3,7 @@
 from flask import Blueprint
 
 from redap.services import groups
-from redap.utils import route
+from redap.api.utils import route
 from redap.specs import (
     group_one, group_many, group_create, group_delete,
     group_update, group_members, group_member_add, group_member_del,

@@ -8,52 +8,6 @@ from redap.models.apikey import APIKey
 from redap.exceptions import RedapError
 
 
-def generate_apikey_table(api_keys):
-    table = list()
-    table.append('\nAPI key{0}Description'.format(' ' * 58))
-    table.append('{0} {1}'.format('=' * 64, '=' * 16))
-
-    for api_key in api_keys:
-        enabled = '' if api_key.enabled else '*'
-        table.append('{0}{1} {2}'.format(api_key.key, enabled, api_key.description))
-
-    return '\n'.join(table)
-
-
-def generate_spec_def(schema_name, config):
-    fields = {
-        'required': config['required_fields'],
-        'properties': {}
-    }
-
-    for name, field in config['fields'].items():
-        fields['properties'][name] = {
-            'type': field['type'],
-        }
-
-    return {schema_name: fields}
-
-
-def props_to_str(entry, **kwargs):
-    """Converts value array to string if count <= 1, skips hidden fields"""
-
-    formatted = {}
-    skip_fields = kwargs.pop('skip_fields', [])
-
-    for field_name, value in entry.get_attributes_dict().items():
-        if field_name in skip_fields:
-            continue
-
-        if len(value) == 1:
-            formatted[field_name] = value[0]
-        elif len(value) < 1:
-            formatted[field_name] = None
-        else:
-            formatted[field_name] = value
-
-    return formatted
-
-
 def validation_error(*args):
     raise RedapError(message=args[0].message, status_code=422)
 

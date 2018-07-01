@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from flask import jsonify, request
+from flask_graphql import GraphQLView
 import traceback
 from redap import factory
 from redap.core import cors, swagger
+from redap.settings import user_schema
 from redap.exceptions import RedapError
 from ldap3.core.exceptions import LDAPException, LDAPOperationResult
 from .users import bp as users_bp
@@ -26,6 +28,15 @@ def create_app(*args, **kwargs):
 
     # Attach bundles
     register_blueprints(app, [users_bp, groups_bp])
+
+    app.add_url_rule(
+        '/graphql',
+        view_func=GraphQLView.as_view(
+            'graphql',
+            schema=user_schema.graphene_schema,
+            graphiql=True
+        )
+    )
 
     # Init swagger and inject model props
     swagger.init_app(app)

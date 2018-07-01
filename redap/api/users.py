@@ -3,7 +3,7 @@
 from flask import Blueprint
 
 from redap.services import users
-from redap.utils import route
+from redap.api.utils import route
 from redap.specs import (
     user_one, user_many, user_create, user_delete,
     user_update, user_memberships, user_password,
