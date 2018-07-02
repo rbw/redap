@@ -11,6 +11,11 @@ from redap.specs import (
     user_pw_never_expires, user_authenticate
 )
 
+from redap._specs import user_create as uc
+
+print(uc.__dict__)
+print(user_create)
+
 bp = Blueprint('users', __name__, url_prefix='/users')
 
 

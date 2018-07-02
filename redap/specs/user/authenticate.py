@@ -21,18 +21,7 @@ user_authenticate = {
         },
     }],
     'definitions': {
-        'Credentials': {
-            'type': 'object',
-            'required': ['username', 'password'],
-            'properties': {
-                'username': {
-                    'type': 'string'
-                },
-                'password': {
-                    'type': 'string'
-                }
-            }
-        },
+
         **op_success_def,
         **op_ldap_error_def,
         **op_error_def,
