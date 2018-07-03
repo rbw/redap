@@ -1,26 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from redap.specs.user import get_user_def, user_body, tags
-from redap.specs.definitions import (
-    op_success, op_success_def,
-    op_ldap_error, op_ldap_error_def,
-    op_error, op_error_def
-)
-from redap.specs.descriptions import USER_CREATE
+from redap.specs.definitions import LDAP_OPERATION
+from . import param_body, get_user_spec, def_user
 
-user_create = {
-    'tags': tags,
-    'summary': USER_CREATE,
-    'parameters': [user_body],
-    'definitions': {
-        **get_user_def(),
-        **op_success_def,
-        **op_ldap_error_def,
-        **op_error_def,
-    },
-    'responses': {
-        '201': op_success,
-        '400': op_error,
-        '500': op_ldap_error,
-    }
-}
+data = get_user_spec(
+    summary='Create user',
+    params=[param_body],
+    defs=[def_user],
+    responses=[(201, LDAP_OPERATION)]
+)

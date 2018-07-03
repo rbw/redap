@@ -17,5 +17,5 @@ class FlaskTestCase(TestCase):
     def tearDown(self):
         self.app = None
 
-    def test(self):
+    def tes(self):
         self.assertEqual(self.app.config['REDAP_LDAP_USER']['relative_dn'], True)

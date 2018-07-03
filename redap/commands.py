@@ -6,7 +6,6 @@ import click
 from sqlalchemy.orm.exc import NoResultFound
 from flask.cli import AppGroup
 from redap.models.apikey import APIKey
-from redap.utils import generate_apikey_table
 from redap.exceptions import InvalidConfiguration
 
 try:
@@ -19,6 +18,18 @@ except InvalidConfiguration as error:
 
 
 key_cli = AppGroup('auth', help='Manage API keys')
+
+
+def generate_apikey_table(api_keys):
+    table = list()
+    table.append('\nAPI key{0}Description'.format(' ' * 58))
+    table.append('{0} {1}'.format('=' * 64, '=' * 16))
+
+    for api_key in api_keys:
+        enabled = '' if api_key.enabled else '*'
+        table.append('{0}{1} {2}'.format(api_key.key, enabled, api_key.description))
+
+    return '\n'.join(table)
 
 
 @key_cli.command('add')

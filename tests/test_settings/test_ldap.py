@@ -26,11 +26,15 @@ CONFIG_BASE = {
 }
 
 
+def get_ldap(data, **kwargs):
+    return LDAPLoader(data=data, **kwargs).data
+
+
 class SettingsLoaderCase(TestCase):
     """Setting a valid configuration should work"""
     def test_set_valid_config(self):
         c = copy(CONFIG_BASE)
-        data = LDAPLoader(data=c).data
+        data = get_ldap(c)
 
         self.assertEqual(data['base_dn'], BASE_DN)
         self.assertEqual(data['conn_timeout'], DEFAULT_CONN_TIMEOUT)
@@ -42,22 +46,22 @@ class SettingsLoaderCase(TestCase):
     def test_set_ssl_by_schema(self):
         c = copy(CONFIG_BASE)
 
-        data = LDAPLoader(data=c).data
+        data = get_ldap(c)
         self.assertTrue(data['use_ssl'])
 
         c['uri'] = 'ldap://foo.bar:636'
 
-        data = LDAPLoader(data=c).data
+        data = get_ldap(c)
         self.assertFalse(data['use_ssl'])
 
     """Extracting host_name from URI should work"""
     def test_get_host_name(self):
-        data = LDAPLoader(data=CONFIG_BASE).data
+        data = get_ldap(CONFIG_BASE)
         self.assertEqual(data['hostname'], HOST_NAME)
 
     """Extracting port from URI should work"""
     def test_get_port(self):
-        data = LDAPLoader(data=CONFIG_BASE).data
+        data = get_ldap(CONFIG_BASE)
         self.assertEqual(data['port'], PORT)
 
     """Not setting a conn_timeout should set its default"""
@@ -65,13 +69,13 @@ class SettingsLoaderCase(TestCase):
         c = copy(CONFIG_BASE)
         del c['conn_timeout']
 
-        data = LDAPLoader(data=c).data
+        data = get_ldap(c)
         self.assertEqual(data['conn_timeout'], 3)
 
     """Not setting a directory_type should set its default"""
     def test_default_directory_type(self):
         c = copy(CONFIG_BASE)
-        data = LDAPLoader(data=c).data
+        data = get_ldap(c)
         self.assertEqual(data['directory_type'], DEFAULT_DIRECTORY_TYPE)
 
     """Not setting a return_error_details should set its default"""
@@ -79,7 +83,7 @@ class SettingsLoaderCase(TestCase):
         c = copy(CONFIG_BASE)
         del c['return_error_details']
 
-        data = LDAPLoader(data=c).data
+        data = get_ldap(c)
         self.assertEqual(data['return_error_details'], DEFAULT_RETURN_ERRORS)
 
     """Not specifying a base_dn should fail"""
@@ -87,19 +91,19 @@ class SettingsLoaderCase(TestCase):
         c = copy(CONFIG_BASE)
         del c['base_dn']
 
-        self.assertRaises(InvalidConfiguration, LDAPLoader, data=c)
+        self.assertRaises(InvalidConfiguration, get_ldap, c)
 
     """Not specifying a bind_dn should fail"""
     def test_missing_bind_dn(self):
         c = copy(CONFIG_BASE)
         del c['bind_dn']
 
-        self.assertRaises(InvalidConfiguration, LDAPLoader, data=c)
+        self.assertRaises(InvalidConfiguration, get_ldap, c)
 
     """Not specifying a secret should fail"""
     def test_missing_secret(self):
         c = copy(CONFIG_BASE)
         del c['secret']
 
-        self.assertRaises(InvalidConfiguration, LDAPLoader, data=c)
+        self.assertRaises(InvalidConfiguration, get_ldap, c)
 

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from redap.specs.user import ldap_operation_spec
-from redap.specs.descriptions import USER_DISABLE
-from copy import deepcopy
+from redap.specs.definitions import LDAP_OPERATION
+from . import param_path, get_user_spec
 
-user_disable = deepcopy(ldap_operation_spec)
-user_disable['summary'] = USER_DISABLE
+data = get_user_spec(
+    summary='Disable user',
+    params=[param_path],
+    responses=[(201, LDAP_OPERATION)]
+)

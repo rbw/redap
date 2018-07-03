@@ -1,16 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import graphene
 import os
 from redap.settings.schemas import container_schema, default_profiles
 from redap.core import ldap
 from .base import Loader
-
-GRAPHENE_TYPES = {
-    'id': graphene.ID(),
-    'integer': graphene.Int(),
-    'string': graphene.String(),
-}
 
 
 class SchemaLoader(Loader):
@@ -50,12 +43,12 @@ class SchemaLoader(Loader):
 
         return data
 
+    def _get_cls_name(self, prefix):
+        return "{0}{1}".format(prefix, self.entry_name.capitalize())
+
     @property
     def fields(self):
         return self.data['fields']
-
-    def _get_cls_name(self, prefix):
-        return "{0}{1}".format(prefix, self.entry_name.capitalize())
 
     @property
     def ldap_model(self):
@@ -68,12 +61,4 @@ class SchemaLoader(Loader):
 
         name = self._get_cls_name('LDAP')
         cls = globals()[name] = type(name, (ldap.Entry, ), attributes)
-        return cls
-
-    @property
-    def graphene_schema(self):
-        name = self._get_cls_name('Graphene')
-        attributes = {k: GRAPHENE_TYPES[v['type']] for k, v in self.fields.items()}
-        cls = globals()[name] = type(name, (graphene.Interface, ), attributes)
-
         return cls

@@ -1,30 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from redap.specs.user import tags
-from redap.specs.descriptions import USER_MANY
-from redap.specs.definitions import (
-    op_error, op_error_def, many_filter_param
-)
+from redap.specs.common import filter_param
+from . import get_user_spec, def_user
 
-user_many = {
-    'tags': tags,
-    'summary': USER_MANY,
-    'parameters': [many_filter_param],
-    'definitions': {
-        **op_error_def,
-        'Users': {
-            'type': 'array',
-            'items': {
-                '$ref': '#/definitions/User'
-            }
-        },
-    },
-    'responses': {
-        '200': {
-            'schema': {
-                '$ref': '#/definitions/Users'
-            },
-        },
-        '400': op_error,
+response_def = {
+    'definition': def_user,
+    'response': {
+        'description': 'List of users',
+        'schema': {
+            '$ref': '#/definitions/User'
+        }
     }
 }
+
+data = get_user_spec(
+    summary='Get list of users',
+    params=[filter_param],
+    responses=[(200, response_def)]
+)

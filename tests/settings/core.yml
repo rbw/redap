@@ -1,5 +1,0 @@
-# Can be either `api_key` or `disabled` currently
-auth_type: disabled
-
-# SQLAlchemy connection string
-database_uri: 'sqlite+pysqlite:///.db/redap.db'

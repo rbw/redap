@@ -1,25 +1,19 @@
 # -*- coding: utf-8 -*-
 
-from redap.specs.group import get_group_def, tags, group_id_path
-from redap.specs.definitions import (
-    op_error, op_error_def
-)
-from redap.specs.descriptions import GROUP_ONE
+from . import get_group_spec, def_group, param_path
 
-group_one = {
-    'tags': tags,
-    'summary': GROUP_ONE,
-    'parameters': [group_id_path],
-    'definitions': {
-        **get_group_def(),
-        **op_error_def,
-    },
-    'responses': {
-        '200': {
-            'schema': {
-                '$ref': '#/definitions/Group'
-            },
-        },
-        '400': op_error,
+response_def = {
+    'definition': def_group,
+    'response': {
+        "description": "Single group",
+        "schema": {
+            "$ref": "#/definitions/Group"
+        }
     }
 }
+
+data = get_group_spec(
+    summary='Get single group',
+    params=[param_path],
+    responses=[(200, response_def)]
+)

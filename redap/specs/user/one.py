@@ -1,25 +1,19 @@
 # -*- coding: utf-8 -*-
 
-from redap.specs.user import get_user_def, tags, user_id_path
-from redap.specs.definitions import (
-    op_error, op_error_def
-)
-from redap.specs.descriptions import USER_ONE
+from . import get_user_spec, def_user, param_path
 
-user_one = {
-    'tags': tags,
-    'summary': USER_ONE,
-    'parameters': [user_id_path],
-    'definitions': {
-        **get_user_def(),
-        **op_error_def,
-    },
-    'responses': {
-        '200': {
-            'schema': {
-                '$ref': '#/definitions/User'
-            },
-        },
-        '400': op_error,
+response_def = {
+    'definition': def_user,
+    'response': {
+        "description": "Single user",
+        "schema": {
+            "$ref": "#/definitions/User"
+        }
     }
 }
+
+data = get_user_spec(
+    summary='Get single user',
+    params=[param_path],
+    responses=[(200, response_def)]
+)

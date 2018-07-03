@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from redap.specs.user import ldap_operation_spec
-from redap.specs.descriptions import USER_UNLOCK
-from copy import deepcopy
+from redap.specs.definitions import LDAP_OPERATION
+from . import param_path, get_user_spec
 
-user_unlock = deepcopy(ldap_operation_spec)
-user_unlock['summary'] = USER_UNLOCK
+data = get_user_spec(
+    summary='Unlock user',
+    params=[param_path],
+    responses=[(201, LDAP_OPERATION)]
+)

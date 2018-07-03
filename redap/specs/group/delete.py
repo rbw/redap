@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from redap.specs.group import ldap_operation_spec
-from redap.specs.descriptions import GROUP_DELETE
-from copy import deepcopy
+from redap.specs.definitions import LDAP_OPERATION
+from . import param_path, get_group_spec, def_group
 
-group_delete = deepcopy(ldap_operation_spec)
-group_delete['summary'] = GROUP_DELETE
+data = get_group_spec(
+    summary='Remove group',
+    params=[param_path],
+    defs=[def_group],
+    responses=[(200, LDAP_OPERATION)]
+)

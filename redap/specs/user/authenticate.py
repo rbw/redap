@@ -1,45 +1,27 @@
 # -*- coding: utf-8 -*-
 
-from redap.specs.user import tags
-from redap.specs.definitions import (
-    op_success, op_success_def,
-    op_ldap_error, op_ldap_error_def,
-    op_error, op_error_def
-)
-from redap.specs.descriptions import USER_AUTHENTICATE
+from redap.specs.definitions import LDAP_OPERATION
+from redap.specs.utils import get_body_param
+from . import get_user_spec, param_path
 
-user_authenticate = {
-    'tags': tags,
-    'summary': USER_AUTHENTICATE,
-    'parameters': [{
+credentials = {
+    'Credentials': {
         'type': 'object',
-        'name': 'body',
-        'required': True,
-        'in': 'body',
-        'schema': {
-            '$ref': '#/definitions/Credentials'
-        },
-    }],
-    'definitions': {
-        'Credentials': {
-            'type': 'object',
-            'required': ['username', 'password'],
-            'properties': {
-                'username': {
-                    'type': 'string'
-                },
-                'password': {
-                    'type': 'string'
-                }
+        'required': ['username', 'password'],
+        'properties': {
+            'username': {
+                'type': 'string'
+            },
+            'password': {
+                'type': 'string'
             }
-        },
-        **op_success_def,
-        **op_ldap_error_def,
-        **op_error_def,
-    },
-    'responses': {
-        '201': op_success,
-        '400': op_error,
-        '500': op_ldap_error,
+        }
     }
 }
+
+data = get_user_spec(
+    summary='Authenticate user',
+    params=[get_body_param('Credentials')],
+    defs=[credentials],
+    responses=[(201, LDAP_OPERATION)]
+)

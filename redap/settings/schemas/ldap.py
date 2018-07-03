@@ -32,7 +32,7 @@ schema = {
     'debug': {
         'required': False,
         'type': 'string',
-        'allowed': ['off', 'basic', 'network', 'extended'],
+        'allowed': ['off', 'basic', 'error', 'protocol', 'network', 'extended'],
         'default': 'off'
     },
     'return_error_details': {

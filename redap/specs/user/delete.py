@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from redap.specs.user import ldap_operation_spec
-from redap.specs.descriptions import USER_DELETE
-from copy import deepcopy
+from redap.specs.definitions import LDAP_OPERATION
+from . import param_path, get_user_spec, def_user
 
-user_delete = deepcopy(ldap_operation_spec)
-user_delete['summary'] = USER_DELETE
+data = get_user_spec(
+    summary='Remove user',
+    params=[param_path],
+    defs=[def_user],
+    responses=[(200, LDAP_OPERATION)]
+)

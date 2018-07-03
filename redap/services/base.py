@@ -4,7 +4,6 @@ from flask import current_app as app
 from ldap3 import MODIFY_REPLACE
 from redap.core import ldap
 from redap.exceptions import RedapError
-from redap.utils import props_to_str
 
 ACTIVE_DIRECTORY = 'ad'
 FREEIPA = 'freeipa'
@@ -22,9 +21,27 @@ class ResponseHandler(object):
         if self.count == 0 and raise_on_empty:
             raise RedapError(message='No such object', status_code=404)
 
+    def props_to_str(self, entry):
+        """Converts value array to string if count <= 1, skips hidden fields"""
+
+        formatted = {}
+
+        for field_name, value in entry.get_attributes_dict().items():
+            if field_name in self.hidden_fields:
+                continue
+
+            if len(value) == 1:
+                formatted[field_name] = value[0]
+            elif len(value) < 1:
+                formatted[field_name] = None
+            else:
+                formatted[field_name] = value
+
+        return formatted
+
     def result(self, as_dict=False):
         if as_dict:
-            return [props_to_str(e, skip_fields=self.hidden_fields) for e in self.entries]
+            return [self.props_to_str(e) for e in self.entries]
 
         return self.entries
 
@@ -70,11 +87,11 @@ class Service(object):
         if dirtype != self.dirtype:
             raise RedapError(message='Operation not compatible with this directory server', status_code=500)
 
-    def _get_matching(self, query_filter=None, raise_on_empty=False):
+    def _get_matching(self, query_filter=None, **kwargs):
         return ResponseHandler(
             self.__model__.query.filter(query_filter),
             self.hidden_fields,
-            raise_on_empty=raise_on_empty
+            **kwargs
         )
 
     def get_field_by_ref(self, ref_name):
@@ -122,17 +139,17 @@ class Service(object):
                       object_class=self.classes,
                       attributes=self._create_payload(params, ADD))
 
-    def get_many(self, as_dict=True, **kwargs):
+    def get_many(self, **kwargs):
         return self._get_matching(
             query_filter=kwargs.pop('filter', ''),
-            **kwargs,
-        ).result(as_dict=as_dict) or []
+            raise_on_empty=kwargs.pop('raise_on_empty', False)
+        ).result(kwargs.pop('as_dict', True)) or []
 
-    def get_one(self, id_value, as_dict=False):
+    def get_one(self, id_value, **kwargs):
         return self._get_matching(
             query_filter='({0}={1})'.format(self.id_ref, id_value),
-            raise_on_empty=True,
-        ).result(as_dict=as_dict)[0]
+            raise_on_empty=kwargs.pop('raise_on_empty', True),
+        ).result(kwargs.pop('as_dict', False))[0]
 
     def update(self, id_value, params):
         self._modify(id_value, params)

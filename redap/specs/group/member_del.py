@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from redap.specs.group import ldap_operation_spec
-from redap.specs.group import tags
-from redap.specs.user import user_id_path
-from redap.specs.descriptions import GROUP_MEMBER_DEL
-from copy import deepcopy
+from redap.specs.definitions import LDAP_OPERATION
+from redap.specs.user import param_path as user_param_path
+from . import param_path as group_param_path, get_group_spec
 
-group_member_del = deepcopy(ldap_operation_spec)
-group_member_del['tags'] = tags
-group_member_del['parameters'].append(user_id_path)
-group_member_del['summary'] = GROUP_MEMBER_DEL
+data = get_group_spec(
+    summary='Remove user from group',
+    params=[group_param_path, user_param_path],
+    responses=[(201, LDAP_OPERATION)]
+)

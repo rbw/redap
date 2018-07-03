@@ -1,48 +1,16 @@
 # -*- coding: utf-8 -*-
 
 from functools import partial
-
 from redap.settings import user_schema
-from redap.utils import generate_spec_def
-from redap.specs.definitions import (
-    op_success, op_success_def,
-    op_ldap_error, op_ldap_error_def,
-    op_error, op_error_def
-)
+from redap.specs import get_spec
+from redap.specs.utils import get_path_param, get_body_param, def_from_schema
 
-tags = ['users']
-user_id_path = {
-    'name': 'user_id',
-    'in': 'path',
-    'type': 'string',
-    'required': True,
-}
+def_name = 'User'
 
-user_body = {
-    'type': 'object',
-    'name': 'body',
-    'required': True,
-    'in': 'body',
-    'schema': {
-        '$ref': '#/definitions/User'
-    },
-}
+tags = [def_name]
+param_path = get_path_param('user_id')
+param_body = get_body_param(def_name)
 
-get_user_def = partial(generate_spec_def, 'User', user_schema.data)
-
-ldap_operation_spec = {
-    'tags': tags,
-    'summary': '<Unknown>',
-    'parameters': [user_id_path],
-    'definitions': {
-        **get_user_def(),
-        **op_success_def,
-        **op_ldap_error_def,
-        **op_error_def,
-    },
-    'responses': {
-        '201': op_success,
-        '400': op_error,
-        '500': op_ldap_error,
-    }
-}
+def_user = def_from_schema(def_name, user_schema.data)
+def_users = def_from_schema(def_name, user_schema.data, many=True)
+get_user_spec = partial(get_spec, tag=def_name)

@@ -1,33 +1,37 @@
 # -*- coding: utf-8 -*-
 
-many_filter_param = {
-    'name': 'filter',
-    'in': 'query',
-    'type': 'string',
-    'required': False
-}
-
-include_nested_param = {
-    'name': 'include_nested',
-    'in': 'query',
-    'type': 'boolean',
-    'default': False,
-    'required': False
-}
-
-op_success_def = {
-    'ResponseSuccess': {
-        'type': 'object',
-        'properties': {
-            'result': {
-                'type': 'string'
+LDAP_OPERATION = {
+    'definition': {
+        'LDAPOperation': {
+            'type': 'object',
+            'properties': {
+                'result': {
+                    'type': 'string'
+                }
             }
         }
+    },
+    'response': {
+        'description': 'LDAP operation',
+        'schema': {
+            '$ref': '#/definitions/LDAPOperation'
+        },
     }
 }
 
-op_ldap_error_def = {
-    'LDAPOperationError': {
+ERROR_DEFINITIONS = {
+    'InputError': {
+        'type': 'object',
+        'properties': {
+            'code': {
+                'type': 'integer'
+            },
+            'message': {
+                'type': 'string'
+            },
+        }
+    },
+    'LDAPError': {
         'type': 'object',
         'properties': {
             'code': {
@@ -54,38 +58,19 @@ op_ldap_error_def = {
     }
 }
 
-op_error_def = {
-    'OperationError': {
-        'type': 'object',
-        'properties': {
-            'code': {
-                'type': 'integer'
-            },
-            'message': {
-                'type': 'string'
-            },
+ERROR_RESPONSES = {
+    '400': {
+        'description': 'Input error',
+        'schema': {
+            '$ref': '#/definitions/InputError'
+        },
+    },
+    '500': {
+        'description': 'LDAP error',
+        'schema': {
+            '$ref': '#/definitions/LDAPError'
         }
     }
 }
 
 
-op_ldap_error = {
-    'description': 'LDAP error',
-    'schema': {
-        '$ref': '#/definitions/LDAPError'
-    },
-}
-
-op_error = {
-    'description': 'Operational error',
-    'schema': {
-        '$ref': '#/definitions/OperationError'
-    },
-}
-
-op_success = {
-    'description': 'Operation result',
-    'schema': {
-        '$ref': '#/definitions/ResponseSuccess'
-    },
-}

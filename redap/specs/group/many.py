@@ -1,31 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from redap.specs.group import tags
-from redap.specs.definitions import (
-    op_error, op_error_def, many_filter_param
-)
-from redap.specs.descriptions import GROUP_MANY
+from redap.specs.common import filter_param
+from . import get_group_spec, def_group
 
-group_many = {
-    'tags': tags,
-    'summary': GROUP_MANY,
-    'parameters': [many_filter_param],
-    'definitions': {
-        **op_error_def,
-        'Groups': {
-            'type': 'array',
-            'items': {
-                '$ref': '#/definitions/Group'
-            }
-        },
-    },
-    'responses': {
-        '200': {
-            'description': 'List of groups',
-            'schema': {
-                '$ref': '#/definitions/Groups'
-            },
-        },
-        '400': op_error,
+response_def = {
+    'definition': def_group,
+    'response': {
+        'description': 'List of groups',
+        'schema': {
+            '$ref': '#/definitions/Group'
+        }
     }
 }
+
+data = get_group_spec(
+    summary='Get list of groups',
+    params=[filter_param],
+    responses=[(200, response_def)]
+)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import ssl
-from ldap3.utils.log import set_library_log_detail_level, OFF, BASIC, NETWORK, EXTENDED
+from ldap3.utils.log import set_library_log_detail_level, OFF, ERROR, BASIC, NETWORK, EXTENDED, PROTOCOL
 from . import ldap
 
 ldap_settings = ldap.data
@@ -26,7 +26,9 @@ FORCE_ATTRIBUTE_VALUE_AS_LIST = True
 # LDAP3 Log-level
 log_level_mappings = {
     'off': OFF,
+    'error': ERROR,
     'basic': BASIC,
+    'protocol': PROTOCOL,
     'network': NETWORK,
     'extended': EXTENDED
 }
