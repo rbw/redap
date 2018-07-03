@@ -43,12 +43,12 @@ class SchemaLoader(Loader):
 
         return data
 
+    def _get_cls_name(self, prefix):
+        return "{0}{1}".format(prefix, self.entry_name.capitalize())
+
     @property
     def fields(self):
         return self.data['fields']
-
-    def _get_cls_name(self, prefix):
-        return "{0}{1}".format(prefix, self.entry_name.capitalize())
 
     @property
     def ldap_model(self):
@@ -62,7 +62,3 @@ class SchemaLoader(Loader):
         name = self._get_cls_name('LDAP')
         cls = globals()[name] = type(name, (ldap.Entry, ), attributes)
         return cls
-
-    @property
-    def specs(self):
-        return

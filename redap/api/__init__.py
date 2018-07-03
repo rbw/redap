@@ -3,7 +3,7 @@
 from flask import jsonify, request
 import traceback
 from redap import factory
-from redap.core import cors, swagger, rpc
+from redap.core import cors, swagger
 from redap.exceptions import RedapError
 from ldap3.core.exceptions import LDAPException, LDAPOperationResult
 from .users import bp as users_bp
@@ -26,9 +26,6 @@ def create_app(*args, **kwargs):
 
     # Attach bundles
     register_blueprints(app, [users_bp, groups_bp])
-
-    # Init JSONRPC
-    rpc.init_app(app)
 
     # Init swagger and inject model props
     swagger.init_app(app)

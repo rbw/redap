@@ -143,13 +143,13 @@ class Service(object):
         return self._get_matching(
             query_filter=kwargs.pop('filter', ''),
             raise_on_empty=kwargs.pop('raise_on_empty', False)
-        ).result(**kwargs) or []
+        ).result(kwargs.pop('as_dict', True)) or []
 
     def get_one(self, id_value, **kwargs):
         return self._get_matching(
             query_filter='({0}={1})'.format(self.id_ref, id_value),
             raise_on_empty=kwargs.pop('raise_on_empty', True),
-        ).result(**kwargs)[0]
+        ).result(kwargs.pop('as_dict', False))[0]
 
     def update(self, id_value, params):
         self._modify(id_value, params)

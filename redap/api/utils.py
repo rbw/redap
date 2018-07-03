@@ -19,11 +19,10 @@ def route(bp, *args, **kwargs):
     kwargs['strict_slashes'] = kwargs.pop('strict_slashes', False)
     kwargs['methods'] = [method]
     spec = kwargs.pop('spec')
-    print(spec.__dict__)
 
     def decorator(f):
         @bp.route(*args, **kwargs)
-        @swag_from(spec.__dict__)
+        @swag_from(spec.data)
         @wraps(f)
         def wrapper(*inner_args, **inner_kwargs):
             api_key = request.headers.get('x-api-key')
@@ -41,9 +40,9 @@ def route(bp, *args, **kwargs):
                 inner_kwargs['_params'] = dict(url.query.params)
             elif method in ['POST', 'PUT']:
                 # Inject validated parameters on insert / update operations (if a body is expected)
-                if any(p for p in spec.parameters if p['name'] == 'body' and p['required']):
+                if any(p for p in spec.data['parameters'] if p['name'] == 'body' and p['required']):
                     if method == 'POST':
-                        validate(request.get_json(), specs=spec.__dict__, validation_error_handler=validation_error)
+                        validate(request.get_json(), specs=spec.data, validation_error_handler=validation_error)
 
                     inner_kwargs['_payload'] = request.get_json()
 

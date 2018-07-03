@@ -22,7 +22,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 SWAGGER = {
     'title': 'Redap',
-    'description': 'HTTP/LDAP Gateway',
+    'description': 'Access LDAP-capable directory services over a RESTful HTTP API',
     'contact': {
         'responsibleDeveloper': 'Robert Wikman',
         'email': 'rbw@vault13.org',
