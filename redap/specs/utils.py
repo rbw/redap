@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 def get_query_param(name, data_type='string', default=None, required=False):
     query_param = {
         'name': name,
@@ -6,7 +9,7 @@ def get_query_param(name, data_type='string', default=None, required=False):
         'required': required
     }
 
-    if default:
+    if default is not None:
         query_param['default'] = default
 
     return query_param
@@ -21,23 +24,32 @@ def get_path_param(name, required=True):
     }
 
 
-def get_body_param(definition, required=True):
+def get_body_param(ref, required=True):
     return {
         'type': 'object',
         'name': 'body',
         'required': required,
         'in': 'body',
         'schema': {
-            '$ref': '#/definitions/{0}'.format(definition)
+            '$ref': '#/definitions/{0}'.format(ref)
         },
     }
 
 
-def spec_from_schema(schema):
+def get_response_body(code, definition):
+    return {
+        code: {
+            'description': 'Operation response',
+            'schema': definition
+        }
+    }
+
+
+def def_from_schema(def_name, schema, many=False):
     fields = {
         'required': schema['required_fields'],
         'properties': {},
-        'type': 'object'
+        'object': 'array' if many else 'object'
     }
 
     for name, field in schema['fields'].items():
@@ -45,4 +57,4 @@ def spec_from_schema(schema):
             'type': field['type'],
         }
 
-    return fields
+    return {def_name: fields}
