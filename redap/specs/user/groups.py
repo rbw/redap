@@ -2,7 +2,7 @@
 
 from redap.specs.common import filter_param, nested_param
 from redap.specs.group import def_groups
-from . import get_user_spec
+from . import get_user_spec, param_path
 
 response_def = {
     'definition': def_groups,
@@ -17,6 +17,7 @@ response_def = {
 data = get_user_spec(
     summary='List group memberships',
     params=[
+        param_path,
         filter_param,
         nested_param
     ],

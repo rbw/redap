@@ -2,7 +2,7 @@
 
 from redap.specs.definitions import LDAP_OPERATION
 from redap.specs.utils import get_body_param
-from . import get_group_spec
+from . import get_group_spec, param_path
 
 MemberAdd = {
     'MemberAdd': {
@@ -24,7 +24,7 @@ MemberAdd = {
 
 data = get_group_spec(
     summary='Add user to group',
-    params=[get_body_param('MemberAdd')],
+    params=[param_path, get_body_param('MemberAdd')],
     defs=[MemberAdd],
     responses=[(201, LDAP_OPERATION)]
 )

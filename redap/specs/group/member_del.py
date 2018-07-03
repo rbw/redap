@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from redap.specs.user import param_path as user_param_path
-from . import param_path as group_param_path
-
 from redap.specs.definitions import LDAP_OPERATION
-from . import get_group_spec
+from redap.specs.user import param_path as user_param_path
+from . import param_path as group_param_path, get_group_spec
 
 data = get_group_spec(
     summary='Remove user from group',

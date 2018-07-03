@@ -21,7 +21,7 @@ credentials = {
 
 data = get_user_spec(
     summary='Authenticate user',
-    params=[param_path, get_body_param('Credentials')],
+    params=[get_body_param('Credentials')],
     defs=[credentials],
     responses=[(201, LDAP_OPERATION)]
 )
