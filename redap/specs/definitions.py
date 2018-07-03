@@ -1,21 +1,76 @@
 # -*- coding: utf-8 -*-
 
-many_filter_param = {
-    'name': 'filter',
-    'in': 'query',
-    'type': 'string',
-    'required': False
+BASE_RESPONSES = {
+    '201': {
+        'description': 'Operation result',
+        'schema': {
+            '$ref': '#/definitions/ResponseSuccess'
+        },
+    },
+    '400': {
+        'description': 'Input error',
+        'schema': {
+            '$ref': '#/definitions/InputError'
+        },
+    },
+    '500': {
+        'description': 'LDAP error',
+        'schema': {
+            '$ref': '#/definitions/LDAPError'
+        },
+    }
 }
 
-include_nested_param = {
-    'name': 'include_nested',
-    'in': 'query',
-    'type': 'boolean',
-    'default': False,
-    'required': False
+PASSWORD_CHANGE = {
+    'PasswordChange': {
+        'type': 'object',
+        'required': ['new_password'],
+        'properties': {
+            'new_password': {
+                'type': 'string'
+            },
+            'old_password': {
+                'type': 'string'
+            }
+        }
+    }
 }
 
-op_success_def = {
+CREDENTIALS = {
+    'Credentials': {
+        'type': 'object',
+        'required': ['username', 'password'],
+        'properties': {
+            'username': {
+                'type': 'string'
+            },
+            'password': {
+                'type': 'string'
+            }
+        }
+    }
+}
+
+MEMBER_ADD = {
+    'MemberAdd': {
+        'required': ['id'],
+        'properties': {
+            'id': {
+                'type': 'string',
+                'description': 'User id',
+                'example': 'monty.python'
+            },
+            'fix': {
+                'type': 'string',
+                'default': False,
+                'description': 'Add even if already relationship already exists'
+            }
+        }
+    }
+}
+
+
+BASE_DEFINITIONS = {
     'ResponseSuccess': {
         'type': 'object',
         'properties': {
@@ -23,11 +78,19 @@ op_success_def = {
                 'type': 'string'
             }
         }
-    }
-}
-
-op_ldap_error_def = {
-    'LDAPOperationError': {
+    },
+    'InputError': {
+        'type': 'object',
+        'properties': {
+            'code': {
+                'type': 'integer'
+            },
+            'message': {
+                'type': 'string'
+            },
+        }
+    },
+    'LDAPError': {
         'type': 'object',
         'properties': {
             'code': {
@@ -52,40 +115,4 @@ op_ldap_error_def = {
             }
         }
     }
-}
-
-op_error_def = {
-    'OperationError': {
-        'type': 'object',
-        'properties': {
-            'code': {
-                'type': 'integer'
-            },
-            'message': {
-                'type': 'string'
-            },
-        }
-    }
-}
-
-
-op_ldap_error = {
-    'description': 'LDAP error',
-    'schema': {
-        '$ref': '#/definitions/LDAPError'
-    },
-}
-
-op_error = {
-    'description': 'Operational error',
-    'schema': {
-        '$ref': '#/definitions/OperationError'
-    },
-}
-
-op_success = {
-    'description': 'Operation result',
-    'schema': {
-        '$ref': '#/definitions/ResponseSuccess'
-    },
 }

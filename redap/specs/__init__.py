@@ -1,25 +1,73 @@
 # -*- coding: utf-8 -*-
 
-# User specs
-from .user.one import user_one
-from .user.many import user_many
-from .user.delete import user_delete
-from .user.memberships import user_memberships
-from .user.password import user_password
-from .user.pw_never_expires import user_pw_never_expires
-from .user.unlock import user_unlock
-from .user.enable import user_enable
-from .user.disable import user_disable
-from .user.create import user_create
-from .user.update import user_update
-from .user.authenticate import user_authenticate
+from .specs import UserSpec, GroupSpec
+from .definitions import MEMBER_ADD, CREDENTIALS, PASSWORD_CHANGE
+from .utils import get_body_param, get_path_param, get_query_param
 
-# Group specs
-from .group.one import group_one
-from .group.many import group_many
-from .group.delete import group_delete
-from .group.create import group_create
-from .group.update import group_update
-from .group.members import group_members
-from .group.member_add import group_member_add
-from .group.member_del import group_member_del
+# ################# #
+# User spec objects #
+# ################# #
+user_create = UserSpec('Create new user', params=[get_body_param('User')])
+user_update = UserSpec('Update user', params=[get_path_param('user_id'), get_body_param('User')])
+user_delete = UserSpec('Remove user')
+user_one = UserSpec('Get single user')
+user_many = UserSpec('Get list of users',
+                     params=[
+                         get_query_param('filter'),
+                         get_query_param('include_nested', required=False)
+                     ])
+
+user_groups = GroupSpec('Get list of members',
+                        tag='users',
+                        params=[
+                            get_path_param('user_id'),
+                            get_path_param('group_id'),
+                            get_query_param('include_nested', required=False)
+                        ])
+
+user_unlock = UserSpec('Unlocks the user account')
+user_enable = UserSpec('Enable user account')
+user_disable = UserSpec('Disable user account')
+user_pw_never_expires = UserSpec('Sets password-never-expires for user')
+user_pw_change = UserSpec('Set new password',
+                          params=[get_path_param('user_id'), get_body_param('PasswordChange')],
+                          definition=PASSWORD_CHANGE)
+
+user_authenticate = UserSpec('Authenticate user',
+                             params=[get_path_param('user_id'), get_body_param('Credentials')],
+                             definition=CREDENTIALS)
+
+
+# ################## #
+# Group spec objects #
+# ################## #
+group_create = GroupSpec('Create new group', params=[get_body_param('Group')])
+group_update = GroupSpec('Update group', params=[get_path_param('group_id'), get_body_param('Group')])
+group_delete = GroupSpec('Remove group')
+group_one = GroupSpec('Get single group')
+group_many = GroupSpec('Get list of groups',
+                       params=[
+                           get_query_param('filter'),
+                           get_query_param('include_nested', required=False)
+                       ])
+
+group_members = UserSpec('Get list of members',
+                         tag='groups',
+                         params=[
+                             get_path_param('group_id'),
+                             get_path_param('user_id'),
+                             get_query_param('include_nested', required=False)
+                         ])
+
+group_member_add = GroupSpec('Add user to group',
+                             params=[get_body_param('MemberAdd')],
+                             definition=MEMBER_ADD)
+
+group_member_del = GroupSpec('Remove user from group',
+                             params=[
+                                 get_path_param('group_id'),
+                                 get_path_param('user_id')
+                             ])
+
+from pprint import pprint
+pprint(group_members.__dict__)

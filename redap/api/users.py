@@ -6,15 +6,10 @@ from redap.services import users
 from redap.api.utils import route
 from redap.specs import (
     user_one, user_many, user_create, user_delete,
-    user_update, user_memberships, user_password,
+    user_update, user_groups, user_pw_change,
     user_unlock, user_enable, user_disable,
     user_pw_never_expires, user_authenticate
 )
-
-from redap._specs import user_create as uc
-
-print(uc.__dict__)
-print(user_create)
 
 bp = Blueprint('users', __name__, url_prefix='/users')
 
@@ -47,7 +42,7 @@ def get_one(user_id, _params=None):
     return users.get_one(user_id, as_dict=True)
 
 
-@route(bp, '/<user_id>/groups', spec=user_memberships)
+@route(bp, '/<user_id>/groups', spec=user_groups)
 def get_user_groups(user_id, _params):
     return users.get_groups(user_id, **_params)
 
@@ -58,7 +53,7 @@ def update(user_id, _payload):
     return 'User {0} updated'.format(user_id)
 
 
-@route(bp, '/<user_id>/password', method='PUT', spec=user_password)
+@route(bp, '/<user_id>/password', method='PUT', spec=user_pw_change)
 def set_password(user_id, _payload):
     users.set_password(user_id, **_payload)
     return 'Password set for {0}'.format(user_id)
