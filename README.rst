@@ -12,7 +12,7 @@ Motivation
 -------
 Adding LDAP support to an application can be a time-consuming, tedious and complex task.
 
-Redap adds an abstraction layer on top of LDAP, in its own little habitat—or micro-service, if you will—providing flexibility, customizability and simplicity.
+Redap adds a layer on top of LDAP, in its own little habitat—or micro-service, if you will—providing flexibility, customizability and simplicity.
 
 
 Features
