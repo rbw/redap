@@ -8,11 +8,9 @@
        HTTP/LDAP Gateway /_/
 
 
-Motivation
--------
-Adding LDAP support to an application can be a time-consuming, tedious and complex task.
+Adding LDAP support can be time-consuming, tedious and complex — but it doesn't have to be.
 
-Redap adds a layer on top of LDAP, in its own little habitat—or micro-service, if you will—providing flexibility, customizability and simplicity.
+Redap, from its own little habitat—or micro-service, if you will—produces a RESTful HTTP interface, allowing remote applications to control its translation mechanisms for HTTP/LDAP.
 
 
 Features
@@ -21,14 +19,14 @@ Features
 Redap was partly inspired by and is conceptually similar to `dthree/addict <https://github.com/dthree/addict>`_, but offers more features:
 
 
-- RESTful HTTP(S) API
+- RESTful HTTP API
 - API key authorization
-- Custom schemas
-- Simplified Query Language
+- Simple and straightforward schemas
+- ldap3 *Simplified Query Language* for querying
 - LDAP debugging
-- Robust application stack
-- Production-ready Docker image
-- SwaggerUI
+- Docker image with flask, uwsgi and nginx for Easy Mode deployment
+- 5-step development environment setup
+- SwaggerUI for browsing
 
 
 Getting started
