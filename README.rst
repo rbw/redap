@@ -10,8 +10,7 @@
 
 Adding LDAP support can be time-consuming, tedious and complex — but it doesn't have to be.
 
-Redap, from its own little habitat—or micro-service, if you will—produces a RESTful HTTP interface, allowing remote applications to control its translation mechanisms for HTTP/LDAP.
-
+Redap runs in an easily deployable micro-service which exposes a REST interface for interacting with LDAP-capable directory servers over HTTP/S.
 
 Features
 ------
