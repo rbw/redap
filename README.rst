@@ -10,7 +10,7 @@
 
 Adding LDAP support can be time-consuming, tedious and complex — but it doesn't have to be.
 
-Redap is an easily deployable micro-service, providing an API interacting with LDAP-capable directory servers over HTTP.
+Redap is an easily deployable micro-service, providing an API for interacting with LDAP-capable directory servers over HTTP.
 
 Features
 ------
