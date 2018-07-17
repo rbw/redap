@@ -10,22 +10,20 @@
 
 Adding LDAP support can be time-consuming, tedious and complex — but it doesn't have to be.
 
-Redap runs in an easily deployable micro-service which exposes a REST interface for interacting with LDAP-capable directory servers over HTTP/S.
+Redap is an easily deployable micro-service, providing an API interacting with LDAP-capable directory servers over HTTP.
 
 Features
 ------
 
-Redap was partly inspired by and is conceptually similar to `dthree/addict <https://github.com/dthree/addict>`_, but offers more features:
-
+Redap was partly inspired by and is conceptually similar to `dthree/addict <https://github.com/dthree/addict>`_, but comes with more features.
 
 - RESTful HTTP API
 - API key authorization
-- Simple and straightforward schemas
-- ldap3 *Simplified Query Language* for querying
 - LDAP debugging
-- Docker image with flask, uwsgi and nginx for Easy Mode deployment
-- 5-step development environment setup
-- SwaggerUI for browsing
+- Custom schemas
+- LDAP3 *Simplified Query Language*
+- Docker image with flask, uwsgi and nginx
+- SwaggerUI
 
 
 Getting started
